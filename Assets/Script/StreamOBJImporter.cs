@@ -41,9 +41,6 @@ public class StreamOBJImporter : MonoBehaviour {
         objFileFetchURL = hostURL + apiVersion + "/download-asset/"; // Replace with your API endpoint
         objZipFetchURL =  hostURL + apiVersion + "/download-asset-compressed/";
         objComponentsMemStreams = new Stream[3];
-        // StartCoroutine(RenderMesh("Venise,_La_Piazetta_(Camille_Corot)"));
-        // StartCoroutine(RenderDownloadedMesh("E 45 Aircraft_obj"));
-        StartCoroutine(RenderDownloadedMesh(objectName));
 	}
 
     private IEnumerator RenderDownloadedMesh(string objName){
@@ -150,4 +147,41 @@ public class StreamOBJImporter : MonoBehaviour {
         File.Delete (zipPath);
     }
 
+    [System.Serializable]
+    public class ConvertedFileURL
+    {
+        public string converted_compressed_file_url;
+    }
+    private ConvertedFileURL convertedFileURL;
+
+    public IEnumerator UploadFileAndConvert(string filename, string filePath){
+        // List formData = new List();
+        byte[] filedata = File.ReadAllBytes(filePath);
+        // files[0] = files[0].Replace(@“.",”");
+        // formData.Add(new MultipartFormFileSection(“file”, bytes, files[0], “text/plain”));
+        // StartCoroutine(UploadFile(formData));
+        var convertTo3dUrl= hostURL + apiVersion + "/convert-to-3d/";
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("file", filedata, filename);
+        using (var w = UnityWebRequest.Post(convertTo3dUrl, form))
+        {
+            yield return w.SendWebRequest();
+            if (w.result != UnityWebRequest.Result.Success) {
+                Debug.Log(w.error);
+            }
+            else {
+                Debug.Log("finished");
+                convertedFileURL = JsonUtility.FromJson<ConvertedFileURL>(w.downloadHandler.text);
+            }
+        }
+
+    }
+
+    public void UploadFileAndConvert(){
+        StartCoroutine(UploadFileAndConvert("abc.png", "/home/raghav/Downloads/spatialsuiteSystem1.drawio (2).png"));
+    }
+
+    public void DownloadExistingObject(){
+        StartCoroutine(RenderDownloadedMesh(objectName));
+    }
 }
