@@ -41,7 +41,9 @@ public class StreamOBJImporter : MonoBehaviour {
         objFileFetchURL = hostURL + apiVersion + "/download-asset/"; // Replace with your API endpoint
         objZipFetchURL =  hostURL + apiVersion + "/download-asset-compressed/";
         objComponentsMemStreams = new Stream[3];
-	}
+        //DownloadExistingObject();
+
+    }
 
     private IEnumerator RenderDownloadedMesh(string objName){
         
