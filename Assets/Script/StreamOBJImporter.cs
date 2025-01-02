@@ -1,12 +1,12 @@
-using Dummiesman;
-using System.IO;
-using System.Text;
-using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
+using System.IO;
 using System.IO.Compression;
+using System.Text;
 using System.Threading.Tasks;
+using Dummiesman;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class StreamOBJImporter : MonoBehaviour {
     public string objectName;
@@ -18,7 +18,8 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private GameObject errorScrollbarContainer;
     [SerializeField] private GameObject statusPanel;
 
-    [SerializeField] private GameObject ParentObject;
+    [SerializeField] private GameObject grabbableObjContainerPrefab;
+    [SerializeField] private GameObject objPrefabPlaceholder;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -78,11 +79,16 @@ public class StreamOBJImporter : MonoBehaviour {
         {
             statusTextVariable.text = "Processing the object for rendering...";
             var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
-            var grababbleObj = Instantiate(ParentObject);
-            Transform parentTransform = grababbleObj.transform.GetChild(0).transform;
+            var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
+            grabbableObj.transform.position = objPrefabPlaceholder.transform.position;
+            Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
             Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
-            parentTransform.transform.localScale = (boundsOfLoadedObj.size);
-            loadedObj.transform.parent = parentTransform.transform;
+            //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);
+            grabbableObjBoundingCubeTransform.GetComponent<BoxCollider>().size = boundsOfLoadedObj.size;
+            loadedObj.transform.parent = grabbableObjBoundingCubeTransform.transform;
+            loadedObj.transform.localPosition = Vector3.zero;
+            loadedObj.transform.localScale = new Vector3(1, 1, 1);
+            
         }
         catch
         {
