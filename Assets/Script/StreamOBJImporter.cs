@@ -14,7 +14,12 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private string apiVersion = "v0";
     
     [SerializeField] private TextMeshProUGUI statusTextVariable;
+    [SerializeField] private GameObject errorTextPrefab;
+    [SerializeField] private GameObject errorScrollbarContainer;
     [SerializeField] private GameObject statusPanel;
+
+    [SerializeField] private GameObject ParentObject;
+
     private string objFileFetchURL;
     private string objZipFetchURL;
     private string texURL;
@@ -45,16 +50,85 @@ public class StreamOBJImporter : MonoBehaviour {
 
     }
 
+    private void ResetSceneOnFail()
+    {
+        statusTextVariable.text = "Load";
+    }
+
+    private void PrintErrorToScreen(string message)
+    {
+        var errorTextObj = Instantiate(errorTextPrefab, errorScrollbarContainer.transform);
+        errorTextObj.GetComponent<TextMeshProUGUI>().text = $"-> {message}";
+    }
+
     private IEnumerator RenderDownloadedMesh(string objName){
         
         downloadedMeshDirPath = Path.Combine(Application.persistentDataPath, objName);
         string objfilePath = downloadedMeshDirPath + "/" + objName + ".obj";
         string mtlfilePath = downloadedMeshDirPath + "/" + objName + ".mtl";
         Debug.Log(objfilePath);
-        yield return StartCoroutine(DownloadAndExtractZip(objName));
-        statusTextVariable.text = "Processing the object for rendering...";
-        var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
-        statusPanel.SetActive(false);
+        try
+        {
+            yield return StartCoroutine(DownloadAndExtractZip(objName));
+        }
+        finally
+        { }
+        
+        try
+        {
+            statusTextVariable.text = "Processing the object for rendering...";
+            var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
+            var grababbleObj = Instantiate(ParentObject);
+            Transform parentTransform = grababbleObj.transform.GetChild(0).transform;
+            Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
+            parentTransform.transform.localScale = (boundsOfLoadedObj.size);
+            loadedObj.transform.parent = parentTransform.transform;
+        }
+        catch
+        {
+            Debug.Log("There is some issue was rendering the object.");
+            PrintErrorToScreen("There was some issue in rendering the object.");
+        }
+        finally
+        {
+            
+            //currentBc.center = new Vector3(0f, (boundsOfLoadedObj.size.y / 2), 0f);
+            
+            try
+            {
+                Directory.Delete(downloadedMeshDirPath, true);
+            }
+            catch
+            {
+                Debug.LogError("Unable to delete extracted mesh directory");
+                PrintErrorToScreen("Unable to delete extracted mesh directory");
+            }
+            try
+            {
+                File.Delete(zipPath);
+            }
+            catch
+            {
+                Debug.LogError("Unable to delete downloaded zipfile");
+                PrintErrorToScreen("Unable to delete downloaded zipfile");
+            }
+            finally
+            {
+                try { statusPanel?.SetActive(false); }
+                catch { }
+                statusTextVariable.text = "Load";
+            }
+            
+        }
+        
+        //Rigidbody currentRb  = loadedObj.AddComponent<Rigidbody>();
+        //currentRb.useGravity = false;
+        //currentRb.isKinematic = true;
+        //currentRb.automaticCenterOfMass = true;
+        //currentRb.mass = 1;
+        //currentRb.angularDamping = 0.5f;
+        
+
     }
 
     private IEnumerator RenderStreamedMesh(string objName){
@@ -64,6 +138,22 @@ public class StreamOBJImporter : MonoBehaviour {
         yield return StartCoroutine(DownloadFile(hostURL + componentURLs.obj_file, 2)); // obj_file
         Debug.Log("now running ObjLoader......");
         var loadedObj = new OBJLoader().Load(objComponentsMemStreams[2], objComponentsMemStreams[0]);
+    }
+
+    private Bounds _GetChildRendererBounds(GameObject go)
+    {
+        var renderers = go.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length > 0)
+        {
+            Bounds bounds = renderers[0].bounds;
+            foreach (var rend in renderers)
+            {
+                    bounds.Encapsulate(rend.bounds);
+            }
+            return bounds;
+        }
+        else { return new Bounds(); }
     }
 
     private IEnumerator GetObjComponentsURLs(string objName)
@@ -115,38 +205,81 @@ public class StreamOBJImporter : MonoBehaviour {
             yield return w.SendWebRequest();
             if (w.result != UnityWebRequest.Result.Success) {
                 Debug.Log(w.error);
+                PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
+                ResetSceneOnFail();
+                yield break;
             }
             else {
                 Debug.Log("finished");
                 zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
+
+                // now download the file
+                zipPath = Path.Combine(Application.persistentDataPath, objName+".zip");
+                statusTextVariable.text = "Downloading the compressed object...";
+                using(UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
+                {
+
+                    yield return www.SendWebRequest();
+                    if(www.result != UnityWebRequest.Result.Success)
+                    {
+                        Debug.LogError(www.error);
+                        PrintErrorToScreen("Something went wrong while trying to download object zip file.");
+                        ResetSceneOnFail();
+                        yield return null;
+                    }
+                    else
+                    {
+                        byte[] result = www.downloadHandler.data;
+                        Debug.Log(result.Length / (1024 * 1024));
+                        using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
+                        {
+                            if (!SourceStream.CanWrite)
+                            {
+                                Debug.LogError("Unable to write to the downloads directory");
+                                PrintErrorToScreen("Unable to write to the downloads directory");
+                                ResetSceneOnFail();
+                                yield break;
+                            }
+                            else
+                            {
+                                SourceStream.Seek(0, SeekOrigin.End);
+                                Task task = SourceStream.WriteAsync(result, 0, result.Length);
+                                yield return new WaitUntil(() => task.IsCompleted);
+                            }
+                        }
+                    }
+            
+                }
             }
         }
 
-        // now download the file
-        zipPath = Path.Combine(Application.persistentDataPath, objName+".zip");
-        statusTextVariable.text = "Downloading the compressed object...";
-        using(UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file)){
-
-            yield return www.SendWebRequest();
-            byte[] result = www.downloadHandler.data;
-            Debug.Log(result.Length/(1024*1024));
-            using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
-            {
-                SourceStream.Seek(0, SeekOrigin.End);
-                Task task = SourceStream.WriteAsync(result, 0, result.Length);
-                yield return new WaitUntil(() => task.IsCompleted);
-            }
-        }
         
-        // extract file
-        string extractPath = Application.persistentDataPath;
-        statusTextVariable.text = "Extracting the compressed object...";
-        ZipFile.ExtractToDirectory(zipPath, extractPath);
+
+        try
+        {
+            // extract file
+            string extractPath = Application.persistentDataPath;
+            statusTextVariable.text = "Extracting the compressed object...";
+            ZipFile.ExtractToDirectory(zipPath, extractPath);
+        }
+        catch
+        {
+            Debug.LogError("failed to extract downloaded zip file.");
+            PrintErrorToScreen("failed to extract downloaded object zip file.");
+            File.Delete(zipPath);
+            ResetSceneOnFail();
+            yield break;
+        }
     }
 
     private void OnApplicationQuit() {
-        Directory.Delete (downloadedMeshDirPath, true);
-        File.Delete (zipPath);
+        try
+        {
+            Directory.Delete(downloadedMeshDirPath, true);
+            File.Delete(zipPath);
+        }
+        catch { }
+        
     }
 
     [System.Serializable]
@@ -185,5 +318,10 @@ public class StreamOBJImporter : MonoBehaviour {
 
     public void DownloadExistingObject(){
         StartCoroutine(RenderDownloadedMesh(objectName));
+        var errorCount = errorScrollbarContainer.transform.childCount;
+        for(int i=0; i<errorCount; i++)
+        {
+            Destroy(errorScrollbarContainer.transform.GetChild(i).gameObject);
+        }
     }
 }

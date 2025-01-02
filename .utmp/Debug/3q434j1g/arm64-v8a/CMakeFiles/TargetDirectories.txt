@@ -1,0 +1,8 @@
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/.utmp/Debug/3q434j1g/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

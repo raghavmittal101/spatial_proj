@@ -1,0 +1,23 @@
+# ninja log v5
+7	887	1735293828601311575	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	6a20ac55f61c46f0
+888	1318	1735293829033836357	/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3q434j1g/obj/arm64-v8a/libswappywrapper.so	53813afed66d4325
+6	1243	1735293828960035508	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	ef0fe59d95499ba9
+3	1290	1735293829008680566	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	254d7bcba2d8da7d
+7	1279	1735293828995854304	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	fe1c908bcb95e95d
+4	1389	1735293829106734987	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	6560c38c7deeab5f
+3	1256	1735293828973210467	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	3c14b595c1801eda
+6	1303	1735293829021078593	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	1b7e599aaf166cc8
+1433	1509	1735293829222638162	/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3q434j1g/obj/arm64-v8a/libgame.so	f8f5e005bd24b22a
+3	1334	1735293829052878944	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	9679aad79e82e66e
+2	1433	1735293829151558927	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	b031b55b3e3bdf96
+15	640	1735555775794035220	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	6a20ac55f61c46f0
+641	1054	1735555776204130146	/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3q434j1g/obj/arm64-v8a/libswappywrapper.so	53813afed66d4325
+13	1124	1735555776279500057	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	ef0fe59d95499ba9
+13	1149	1735555776303007247	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	1b7e599aaf166cc8
+12	1159	1735555776315182950	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	254d7bcba2d8da7d
+12	1183	1735555776339471983	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	3c14b595c1801eda
+14	1208	1735555776364259537	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	fe1c908bcb95e95d
+12	1225	1735555776381230665	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	9679aad79e82e66e
+13	1273	1735555776428621405	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	6560c38c7deeab5f
+11	1313	1735555776469971271	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	b031b55b3e3bdf96
+1313	1388	1735555776539896033	/Users/raghavmittal101/Documents/repos/spatial_computing_suite_gitlab/spatial-computer-suite/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3q434j1g/obj/arm64-v8a/libgame.so	f8f5e005bd24b22a
