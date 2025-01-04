@@ -70,6 +70,7 @@ public class StreamOBJImporter : MonoBehaviour {
         Debug.Log(objfilePath);
         try
         {
+            statusPanel?.SetActive(true);
             yield return StartCoroutine(DownloadAndExtractZip(objName));
         }
         finally
@@ -80,7 +81,10 @@ public class StreamOBJImporter : MonoBehaviour {
             statusTextVariable.text = "Processing the object for rendering...";
             var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
             var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
-            grabbableObj.transform.position = objPrefabPlaceholder.transform.position;
+            grabbableObj.transform.position = new Vector3(
+                objPrefabPlaceholder.transform.position.x,
+                objPrefabPlaceholder.transform.position.y+0.03f,
+                objPrefabPlaceholder.transform.position.z);
             Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
             Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
             //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);

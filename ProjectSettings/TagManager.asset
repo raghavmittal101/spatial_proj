@@ -5,6 +5,18 @@ TagManager:
   serializedVersion: 3
   tags:
   - EventSystem
+  - SamplesInfoPanel
+  - QDSUIToggleButton
+  - QDSUIIcon
+  - QDSUIToggleBorderlessButton
+  - QDSUITextSecondaryColor
+  - QDSUIToggleCheckboxRadio
+  - QDSUISharedThemeColor
+  - QDSUIToggleSwitch
+  - QDSUIAccentColor
+  - QDSUISecondaryButton
+  - QDSUIPrimaryButton
+  - boundingbox
   layers:
   - Default
   - TransparentFX
