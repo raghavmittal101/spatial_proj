@@ -44356,6 +44356,18 @@ MonoBehaviour:
   eventSystemOculus: {fileID: 402187688}
   cameraUnity: {fileID: 180345375}
   cameraOculus: {fileID: 1440894254}
+  valueInDropdown:
+  - aircraft
+  - penguin
+  - axe
+  - trelisOBJ
+  - colorfulchair
+  objNameOnServer:
+  - E 45 Aircraft_obj
+  - PenguinBaseMesh
+  - Axe
+  - blendermeshgen
+  tMP_Dropdown: {fileID: 5066602942464178232}
 --- !u!114 &2142501650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44369,7 +44381,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: E 45 Aircraft_obj
-  hostURL: https://cosmic-emerging-dodo.ngrok-free.app/
+  predefinedObjHostURL: https://sparrow-amazed-annually.ngrok-free.app/
+  text23DHostURL: https://urchin-amazed-neatly.ngrok-free.app/
   apiVersion: v0
   statusTextVariable: {fileID: 551959123}
   errorTextPrefab: {fileID: 4673311243270213876, guid: 724290d1173f14696a574361d9ef6853, type: 3}
@@ -45594,7 +45607,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: aircraft
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -46835,13 +46848,7 @@ MonoBehaviour:
   m_Value: 0
   m_MultiSelect: 0
   m_Options:
-    m_Options:
-    - m_Text: aircraft
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: penguin
-      m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

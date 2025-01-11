@@ -17,6 +17,6 @@ public class TextInputHandler : MonoBehaviour
     private void ProcessSelectedItem()
     {
         var userInput = promptInputField.text;
-        mainScript.ProcessUserInput(userInput);
+        mainScript.ProcessUserPrompt(userInput);
     }
 }
