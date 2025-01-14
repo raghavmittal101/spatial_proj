@@ -7,6 +7,7 @@ using Dummiesman;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class StreamOBJImporter : MonoBehaviour {
     public string objectName;
@@ -19,8 +20,12 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private GameObject errorScrollbarContainer;
     [SerializeField] private GameObject statusPanel;
 
+    private GameObject objPrefabPlaceholder;
     [SerializeField] private GameObject grabbableObjContainerPrefab;
-    [SerializeField] private GameObject objPrefabPlaceholder;
+    [SerializeField] private GameObject objPrefabPlaceholderAR;
+    [SerializeField] private GameObject objPrefabPlaceholderVR;
+    [SerializeField] private Toggle VR2ARToggleButton;
+    [SerializeField] private GameObject envBoundingCube;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -51,6 +56,8 @@ public class StreamOBJImporter : MonoBehaviour {
         //objComponentsMemStreams = new Stream[3];
         text23DGenURL = text23DHostURL + apiVersion + "/text-2-3d/";
         //DownloadExistingObject();
+        VR2ARToggleButton.onValueChanged.AddListener(_OnValueChanged);
+        objPrefabPlaceholder = objPrefabPlaceholderVR;
 
     }
 
@@ -87,8 +94,12 @@ public class StreamOBJImporter : MonoBehaviour {
             var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
             grabbableObj.transform.position = new Vector3(
                 objPrefabPlaceholder.transform.position.x,
-                objPrefabPlaceholder.transform.position.y+0.1f,
+                objPrefabPlaceholder.transform.position.y+0.05f,
                 objPrefabPlaceholder.transform.position.z);
+            grabbableObj.transform.localScale = new Vector3(
+                1.5f,
+                1.5f,
+                1.5f);
             Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
             Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
             //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);
@@ -218,7 +229,6 @@ public class StreamOBJImporter : MonoBehaviour {
 
     // Downloads zip file from server to persistent path and returns the folder path
     private IEnumerator DownloadAndExtractZip(string objName, InputMode inputMode){
-        statusTextVariable.text = "Fetching the object URL...";
         WWWForm form = new WWWForm();
         string objectFetchURL = "";
         string hostURL = "";
@@ -228,12 +238,14 @@ public class StreamOBJImporter : MonoBehaviour {
             form.AddField("asset_name", objName);
             objectFetchURL = objZipFetchURL;
             hostURL = predefinedObjHostURL;
+            statusTextVariable.text = "Fetching the object URL...";
         }
         else if(inputMode == InputMode.prompt)
         {
             form.AddField("prompt", objName);
             objectFetchURL = text23DGenURL;
             hostURL = text23DHostURL;
+            statusTextVariable.text = "Generating the object. This may take some time...";
         }
         
         using (var w = UnityWebRequest.Post(objectFetchURL, form))
@@ -267,7 +279,7 @@ public class StreamOBJImporter : MonoBehaviour {
                     else
                     {
                         byte[] result = www.downloadHandler.data;
-                        Debug.Log(result.Length / (1024 * 1024));
+                        Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
                         using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
                         {
                             if (!SourceStream.CanWrite)
@@ -369,6 +381,24 @@ public class StreamOBJImporter : MonoBehaviour {
         for (int i = 0; i < errorCount; i++)
         {
             Destroy(errorScrollbarContainer.transform.GetChild(i).gameObject);
+        }
+    }
+
+
+    private void _OnValueChanged(bool enabled)
+    {
+        if (enabled)
+        {
+            objPrefabPlaceholder = objPrefabPlaceholderAR;
+            envBoundingCube.SetActive(false);
+            objPrefabPlaceholderAR.SetActive(true);
+
+        }
+        else
+        {
+            objPrefabPlaceholder = objPrefabPlaceholderVR;
+            envBoundingCube.SetActive(true);
+            objPrefabPlaceholderAR.SetActive(false);
         }
     }
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: 6d949b3d-d4cc-4bad-acc9-0f3c24452de4
+  instanceId: 1ce42542-6070-4745-9dfe-38b31b0eb696
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8
@@ -194,17 +194,17 @@ MonoBehaviour:
       ConstrainAxis: 1
       AxisRange:
         Min: 0.3
-        Max: 3
+        Max: 10
     YAxis:
       ConstrainAxis: 1
       AxisRange:
         Min: 0.3
-        Max: 3
+        Max: 10
     ZAxis:
       ConstrainAxis: 1
       AxisRange:
         Min: 0.3
-        Max: 3
+        Max: 10
 --- !u!1 &5057534995000656116
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 7358e191-33b7-43ca-b066-b2f00531ac66
-  instanceId: 8884bb71-6e85-45fd-ad24-1c2800e5c379
+  instanceId: a387b54b-2138-4029-af02-b1af0b8cc515
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 

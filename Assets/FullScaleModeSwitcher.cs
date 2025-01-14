@@ -7,6 +7,7 @@ public class FullScaleModeSwitcher : MonoBehaviour
     [SerializeField] private Toggle toggleButton;
     [SerializeField] private Transform pointHighliter;
     [SerializeField] private OVRCameraRig oVRCameraRig;
+    //[SerializeReference] private GameObject CeilingObj;
 
     private Vector3 position, scale;
     private Quaternion rotation;
@@ -29,6 +30,7 @@ public class FullScaleModeSwitcher : MonoBehaviour
             position = boundingBox.transform.position;
             boundingBox.transform.localScale = Vector3.one;
             boundingBox.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            //CeilingObj.SetActive(true);
             //var cameraPosition = oVRCameraRig.centerEyeAnchor.position;
             //boundingBox.transform.SetPositionAndRotation(new Vector3((pointHighliter.transform.position.x - cameraPosition.x)*(1f/scale.x), 0f, pointHighliter.transform.position.z - cameraPosition.z) * (1f / scale.z), Quaternion.identity);
 
@@ -39,6 +41,7 @@ public class FullScaleModeSwitcher : MonoBehaviour
             rigidBody.isKinematic = true;
             boundingBox.transform.localScale = scale;
             boundingBox.transform.SetPositionAndRotation(position, rotation);
+            //CeilingObj.SetActive(false);
         }
     }
 }
