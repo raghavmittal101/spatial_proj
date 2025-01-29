@@ -26,6 +26,7 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private GameObject objPrefabPlaceholderVR;
     [SerializeField] private Toggle VR2ARToggleButton;
     [SerializeField] private GameObject envBoundingCube;
+    [SerializeField] private MainScript mainScript;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -107,7 +108,16 @@ public class StreamOBJImporter : MonoBehaviour {
             loadedObj.transform.parent = grabbableObjBoundingCubeTransform.transform;
             loadedObj.transform.localPosition = Vector3.zero;
             loadedObj.transform.localScale = new Vector3(1, 1, 1);
-            
+            if(inputMode == InputMode.prompt)
+            {
+                mainScript.valueInDropdown.Add(objName);
+                mainScript.objNameOnServer.Add(zipURL.asset_name);
+                mainScript.objectsDropdown.enabled = false;
+                mainScript.objectsDropdown.ClearOptions();
+                mainScript.objectsDropdown.AddOptions(mainScript.valueInDropdown);
+                mainScript.objectsDropdown.enabled = true;
+            }
+
         }
         catch(System.Exception e)
         {
@@ -129,15 +139,15 @@ public class StreamOBJImporter : MonoBehaviour {
                 Debug.LogError("Unable to delete extracted mesh directory");
                 PrintErrorToScreen("Unable to delete extracted mesh directory");
             }
-            try
-            {
-                File.Delete(zipPath);
-            }
-            catch
-            {
-                Debug.LogError("Unable to delete downloaded zipfile");
-                PrintErrorToScreen("Unable to delete downloaded zipfile");
-            }
+            //try
+            //{
+            //    File.Delete(zipPath);
+            //}
+            //catch
+            //{
+            //    Debug.LogError("Unable to delete downloaded zipfile");
+            //    PrintErrorToScreen("Unable to delete downloaded zipfile");
+            //}
             finally
             {
                 try { statusPanel?.SetActive(false); }
@@ -233,75 +243,77 @@ public class StreamOBJImporter : MonoBehaviour {
         string objectFetchURL = "";
         string hostURL = "";
 
-        if(inputMode == InputMode.objectName)
+        if (inputMode == InputMode.objectName)
         {
             form.AddField("asset_name", objName);
-            objectFetchURL = objZipFetchURL;
-            hostURL = predefinedObjHostURL;
-            statusTextVariable.text = "Fetching the object URL...";
+            zipURL.asset_name = objName;
+            zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
+            statusTextVariable.text = "Fetching the object...";
         }
-        else if(inputMode == InputMode.prompt)
+        else if (inputMode == InputMode.prompt)
         {
             form.AddField("prompt", objName);
             objectFetchURL = text23DGenURL;
             hostURL = text23DHostURL;
             statusTextVariable.text = "Generating the object. This may take some time...";
-        }
-        
-        using (var w = UnityWebRequest.Post(objectFetchURL, form))
-        {
-            Debug.Log(objectFetchURL);
-            yield return w.SendWebRequest();
-            if (w.result != UnityWebRequest.Result.Success) {
-                Debug.Log(w.error);
-                PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
-                ResetSceneOnFail();
-                yield break;
-            }
-            else {
-                Debug.Log("finished");
-                zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
 
-                // now download the file
-                zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name+".zip");
-                statusTextVariable.text = "Downloading the compressed object...";
-                using(UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
+
+            using (var w = UnityWebRequest.Post(objectFetchURL, form))
+            {
+                Debug.Log(objectFetchURL);
+                yield return w.SendWebRequest();
+                if (w.result != UnityWebRequest.Result.Success)
                 {
+                    Debug.Log(w.error);
+                    PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
+                    ResetSceneOnFail();
+                    yield break;
+                }
+                else
+                {
+                    Debug.Log("finished");
+                    zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
 
-                    yield return www.SendWebRequest();
-                    if(www.result != UnityWebRequest.Result.Success)
+                    // now download the file
+                    zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
+                    statusTextVariable.text = "Downloading the compressed object...";
+                    using (UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
                     {
-                        Debug.LogError(www.error);
-                        PrintErrorToScreen("Something went wrong while trying to download object zip file.");
-                        ResetSceneOnFail();
-                        yield return null;
-                    }
-                    else
-                    {
-                        byte[] result = www.downloadHandler.data;
-                        Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
-                        using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
+
+                        yield return www.SendWebRequest();
+                        if (www.result != UnityWebRequest.Result.Success)
                         {
-                            if (!SourceStream.CanWrite)
+                            Debug.LogError(www.error);
+                            PrintErrorToScreen("Something went wrong while trying to download object zip file.");
+                            ResetSceneOnFail();
+                            yield return null;
+                        }
+                        else
+                        {
+                            byte[] result = www.downloadHandler.data;
+                            Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
+                            using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
                             {
-                                Debug.LogError("Unable to write to the downloads directory");
-                                PrintErrorToScreen("Unable to write to the downloads directory");
-                                ResetSceneOnFail();
-                                yield break;
-                            }
-                            else
-                            {
-                                SourceStream.Seek(0, SeekOrigin.End);
-                                Task task = SourceStream.WriteAsync(result, 0, result.Length);
-                                yield return new WaitUntil(() => task.IsCompleted);
+                                if (!SourceStream.CanWrite)
+                                {
+                                    Debug.LogError("Unable to write to the downloads directory");
+                                    PrintErrorToScreen("Unable to write to the downloads directory");
+                                    ResetSceneOnFail();
+                                    yield break;
+                                }
+                                else
+                                {
+                                    SourceStream.Seek(0, SeekOrigin.End);
+                                    Task task = SourceStream.WriteAsync(result, 0, result.Length);
+                                    yield return new WaitUntil(() => task.IsCompleted);
+                                }
                             }
                         }
+
                     }
-            
                 }
             }
         }
-
         
 
         try
@@ -374,7 +386,7 @@ public class StreamOBJImporter : MonoBehaviour {
         }
     }
 
-    public void GenerateAndDownloadObject()
+    public void GetObjMesh()
     {
         StartCoroutine(RenderDownloadedMesh(objectName, InputMode.prompt));
         var errorCount = errorScrollbarContainer.transform.childCount;

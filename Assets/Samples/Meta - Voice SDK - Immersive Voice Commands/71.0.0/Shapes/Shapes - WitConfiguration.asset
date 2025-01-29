@@ -39,6 +39,8 @@ MonoBehaviour:
   m_Name: Shapes - WitConfiguration
   m_EditorClassIdentifier: 
   _clientAccessToken: JYSZFUVTNXFZ4N3LAHJMDS6JOET2IBVP
+  editorVersionTag: 
+  buildVersionTag: 
   _appInfo:
     name: voicesdk_samples_shapes
     id: 04b6d9fc-60b7-4d9e-8473-9290b9d1243f
@@ -67,6 +69,9 @@ MonoBehaviour:
       - name: color
         id: 629054192387147
       keywords:
+      - keyword: Gray
+        synonyms:
+        - gray
       - keyword: black
         synonyms:
         - black
@@ -151,6 +156,142 @@ MonoBehaviour:
       gender: male
       styles: []
       supported_features: []
+    - name: en_NZ.1
+      locale: en_NZ
+      gender: male
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.3
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.44
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.45
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.46
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.47
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.48
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
+    - name: en_US.49
+      locale: en_US
+      gender: unkown
+      styles:
+      - default
+      - soft
+      - projected
+      - fast
+      - formal
+      supported_features:
+      - style
+      - pitch
+      - speed
+      - sfx
+      - viseme_events
+      - phoneme_events
+      - word_events
     - name: jane_austen
       locale: en_GB
       gender: female
@@ -701,10 +842,10 @@ MonoBehaviour:
       styles: []
       supported_features: []
   _configData:
-  - {fileID: -2426355912040047362}
   - {fileID: -7588891467066084880}
   _configurationId: 4e21a24e472ab684e84db753427d5687
-  timeoutMS: 10000
+  _requestType: 0
+  _requestTimeoutMs: 10000
   endpointConfiguration:
     _uriScheme: 
     _authority: 
@@ -717,10 +858,10 @@ MonoBehaviour:
     _event: 
     _converse: 
   isDemoOnly: 1
+  useIntentAttributes: 1
   useConduit: 0
   _manifestLocalPath: ConduitManifest-63301a14-cdfe-465a-91c0-0d8db67feb7f.json
   excludedAssemblies:
   - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   relaxedResolution: 0
-  _lastRefreshSeconds: 1704738287.9057808

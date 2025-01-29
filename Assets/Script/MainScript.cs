@@ -14,9 +14,9 @@ public class MainScript : MonoBehaviour
     //[SerializeField] Dictionary<string, string> inputObjectNamePairs;
     //= { "aircraft", "penguin", "axe", "tralismesh" };
     //= { "E 45 Aircraft_obj", "PenguinBaseMesh", "Axe", "07_01_2025_16_29_33_1" };
-    [SerializeField] private List<string> valueInDropdown;
-    [SerializeField] private List<string> objNameOnServer;
-    [SerializeField] private TMPro.TMP_Dropdown tMP_Dropdown;
+    [SerializeField] public List<string> valueInDropdown;
+    [SerializeField] public List<string> objNameOnServer;
+    [SerializeField] public TMPro.TMP_Dropdown objectsDropdown;
 
     public void Awake()
     {
@@ -25,7 +25,7 @@ public class MainScript : MonoBehaviour
     }
     public void Start()
     {
-        tMP_Dropdown.AddOptions(valueInDropdown);
+        objectsDropdown.AddOptions(valueInDropdown);
 
 #if UNITY_EDITOR
         eventSystemUnity.SetActive(true);
@@ -59,6 +59,6 @@ public class MainScript : MonoBehaviour
     public void ProcessUserPrompt(string prompt)
     {
         streamOBJImporter.objectName = prompt;
-        streamOBJImporter.GenerateAndDownloadObject();
+        streamOBJImporter.GetObjMesh();
     }
 }
