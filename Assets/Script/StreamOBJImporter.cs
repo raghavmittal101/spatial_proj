@@ -27,6 +27,7 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private Toggle VR2ARToggleButton;
     [SerializeField] private GameObject envBoundingCube;
     [SerializeField] private MainScript mainScript;
+    [SerializeField] private ImageFetcher imageFetcher;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -36,6 +37,9 @@ public class StreamOBJImporter : MonoBehaviour {
     private string zipPath;
     private string downloadedMeshDirPath;
     private string text23DGenURL;
+    private string image23DGenURL;
+    private string text2ImageGenURL;
+
     //private MemoryStream obj_memStream;
     //private MemoryStream mtl_memStream;
     //private MemoryStream tex_memStream;
@@ -54,6 +58,8 @@ public class StreamOBJImporter : MonoBehaviour {
 	void Start () { 
         objFileFetchURL = predefinedObjHostURL + apiVersion + "/download-asset/"; // Replace with your API endpoint
         objZipFetchURL =  predefinedObjHostURL + apiVersion + "/download-asset-compressed/";
+        image23DGenURL = text23DHostURL + apiVersion + "/img-2-3d/";
+        text2ImageGenURL = text23DHostURL + apiVersion + "/text-2-img/";
         //objComponentsMemStreams = new Stream[3];
         text23DGenURL = text23DHostURL + apiVersion + "/text-2-3d/";
         //DownloadExistingObject();
@@ -83,86 +89,104 @@ public class StreamOBJImporter : MonoBehaviour {
         }
         finally
         { }
+
         
+
+
         try
         {
-            downloadedMeshDirPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name);
-            string objfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".obj";
-            string mtlfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".mtl";
-            Debug.Log(objfilePath);
-            statusTextVariable.text = "Processing the object for rendering...";
-            var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
-            var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
-            grabbableObj.transform.position = new Vector3(
-                objPrefabPlaceholder.transform.position.x,
-                objPrefabPlaceholder.transform.position.y+0.05f,
-                objPrefabPlaceholder.transform.position.z);
-            grabbableObj.transform.localScale = new Vector3(
-                1.5f,
-                1.5f,
-                1.5f);
-            Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
-            Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
-            //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);
-            grabbableObjBoundingCubeTransform.GetComponent<BoxCollider>().size = boundsOfLoadedObj.size;
-            loadedObj.transform.parent = grabbableObjBoundingCubeTransform.transform;
-            loadedObj.transform.localPosition = Vector3.zero;
-            loadedObj.transform.localScale = new Vector3(1, 1, 1);
-            if(inputMode == InputMode.prompt)
+            if (inputMode != InputMode.textToImage)
             {
-                mainScript.valueInDropdown.Add(objName);
-                mainScript.objNameOnServer.Add(zipURL.asset_name);
-                mainScript.objectsDropdown.enabled = false;
-                mainScript.objectsDropdown.ClearOptions();
-                mainScript.objectsDropdown.AddOptions(mainScript.valueInDropdown);
-                mainScript.objectsDropdown.enabled = true;
+                downloadedMeshDirPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name);
+                string objfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".obj";
+                string mtlfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".mtl";
+                Debug.Log(objfilePath);
+                statusTextVariable.text = "Processing the object for rendering...";
+                var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
+                var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
+                grabbableObj.transform.position = new Vector3(
+                    objPrefabPlaceholder.transform.position.x,
+                    objPrefabPlaceholder.transform.position.y + 0.05f,
+                    objPrefabPlaceholder.transform.position.z);
+                grabbableObj.transform.localScale = new Vector3(
+                    1.5f,
+                    1.5f,
+                    1.5f);
+                Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
+                Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
+                //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);
+                grabbableObjBoundingCubeTransform.GetComponent<BoxCollider>().size = boundsOfLoadedObj.size;
+                loadedObj.transform.parent = grabbableObjBoundingCubeTransform.transform;
+                loadedObj.transform.localPosition = Vector3.zero;
+                loadedObj.transform.localScale = new Vector3(1, 1, 1);
+                if (inputMode == InputMode.prompt)
+                {
+                    mainScript.valueInDropdown.Add(objName);
+                    mainScript.objNameOnServer.Add(zipURL.asset_name);
+                    mainScript.objectsDropdown.enabled = false;
+                    mainScript.objectsDropdown.ClearOptions();
+                    mainScript.objectsDropdown.AddOptions(mainScript.valueInDropdown);
+                    mainScript.objectsDropdown.enabled = true;
+                }
             }
 
-        }
-        catch(System.Exception e)
-        {
-            Debug.Log("There is some issue was rendering the object.");
-            Debug.LogError(e);
-            PrintErrorToScreen("There was some issue in rendering the object.");
-        }
-        finally
-        {
-            
-            //currentBc.center = new Vector3(0f, (boundsOfLoadedObj.size.y / 2), 0f);
-            
-            try
-            {
-                Directory.Delete(downloadedMeshDirPath, true);
             }
-            catch
+            catch (System.Exception e)
             {
-                Debug.LogError("Unable to delete extracted mesh directory");
-                PrintErrorToScreen("Unable to delete extracted mesh directory");
+                if (inputMode != InputMode.textToImage)
+                {
+                    if (inputMode != InputMode.textToImage)
+                    {
+                        Debug.Log("There is some issue was rendering the object.");
+                        Debug.LogError(e);
+                        PrintErrorToScreen("There was some issue in rendering the object.");
+                    }
+                }
             }
-            //try
-            //{
-            //    File.Delete(zipPath);
-            //}
-            //catch
-            //{
-            //    Debug.LogError("Unable to delete downloaded zipfile");
-            //    PrintErrorToScreen("Unable to delete downloaded zipfile");
-            //}
             finally
             {
-                try { statusPanel?.SetActive(false); }
-                catch { }
-                statusTextVariable.text = "Load";
-            }
+
+            //currentBc.center = new Vector3(0f, (boundsOfLoadedObj.size.y / 2), 0f);
             
-        }
-        
-        //Rigidbody currentRb  = loadedObj.AddComponent<Rigidbody>();
-        //currentRb.useGravity = false;
-        //currentRb.isKinematic = true;
-        //currentRb.automaticCenterOfMass = true;
-        //currentRb.mass = 1;
-        //currentRb.angularDamping = 0.5f;
+
+            
+                try
+                {
+                    if (inputMode != InputMode.textToImage)
+                        Directory.Delete(downloadedMeshDirPath, true);
+                }
+                catch
+                {
+                if (inputMode != InputMode.textToImage)
+                    {
+                        Debug.LogError("Unable to delete extracted mesh directory");
+                        PrintErrorToScreen("Unable to delete extracted mesh directory");
+                    }
+                }
+                //try
+                //{
+                //    File.Delete(zipPath);
+                //}
+                //catch
+                //{
+                //    Debug.LogError("Unable to delete downloaded zipfile");
+                //    PrintErrorToScreen("Unable to delete downloaded zipfile");
+                //}
+                finally
+                {
+                    try { statusPanel?.SetActive(false); }
+                    catch { }
+                    statusTextVariable.text = "Load";
+                }
+
+            }
+
+            //Rigidbody currentRb  = loadedObj.AddComponent<Rigidbody>();
+            //currentRb.useGravity = false;
+            //currentRb.isKinematic = true;
+            //currentRb.automaticCenterOfMass = true;
+            //currentRb.mass = 1;
+            //currentRb.angularDamping = 0.5f;
         
 
     }
@@ -230,11 +254,21 @@ public class StreamOBJImporter : MonoBehaviour {
         public string asset_name;
     }
 
+    public class Text2ImageResponseBody
+    {
+        public string img_file;
+        public string asset_name;
+    }
+
     private ZipURL zipURL;
+    private Text2ImageResponseBody text2ImageResponseBody;
+
     private enum InputMode
     {
         prompt,
-        objectName
+        objectName,
+        imageAssetName,
+        textToImage
     }
 
     // Downloads zip file from server to persistent path and returns the folder path
@@ -257,79 +291,140 @@ public class StreamOBJImporter : MonoBehaviour {
             hostURL = text23DHostURL;
             statusTextVariable.text = "Generating the object. This may take some time...";
 
+            yield return Fetcher(hostURL, objectFetchURL, form);
 
-            using (var w = UnityWebRequest.Post(objectFetchURL, form))
+        }
+
+        else if(inputMode == InputMode.imageAssetName)
+        {
+            form.AddField("assetname", objName);
+            objectFetchURL = image23DGenURL;
+            hostURL = text23DHostURL;
+            statusTextVariable.text = "Generating the object. This may take some time...";
+
+            yield return Fetcher(hostURL, objectFetchURL, form);
+        }
+        else if(inputMode == InputMode.textToImage)
+        {
+            Debug.Log("reached to 291 line");
+            form.AddField("prompt", objName);
+            objectFetchURL = text2ImageGenURL;
+            hostURL = text23DHostURL;
+            statusTextVariable.text = "Generating the object images. This may take some time...";
+
+            yield return FetchImage(objectFetchURL, form);
+        }
+
+        
+            try
             {
-                Debug.Log(objectFetchURL);
-                yield return w.SendWebRequest();
-                if (w.result != UnityWebRequest.Result.Success)
+                if (inputMode != InputMode.textToImage)
                 {
-                    Debug.Log(w.error);
-                    PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
+                    // extract file
+                    string extractPath = Application.persistentDataPath;
+                    statusTextVariable.text = "Extracting the compressed object...";
+                    ZipFile.ExtractToDirectory(zipPath, extractPath);
+                }
+            }
+            catch
+            {
+                if (inputMode != InputMode.textToImage)
+                {
+                    Debug.LogError("failed to extract downloaded zip file.");
+                    PrintErrorToScreen("failed to extract downloaded object zip file.");
+                    File.Delete(zipPath);
                     ResetSceneOnFail();
                     yield break;
                 }
-                else
-                {
-                    Debug.Log("finished");
-                    zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
+            }
+        
+        
+    }
 
-                    // now download the file
-                    zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
-                    statusTextVariable.text = "Downloading the compressed object...";
-                    using (UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
-                    {
 
-                        yield return www.SendWebRequest();
-                        if (www.result != UnityWebRequest.Result.Success)
-                        {
-                            Debug.LogError(www.error);
-                            PrintErrorToScreen("Something went wrong while trying to download object zip file.");
-                            ResetSceneOnFail();
-                            yield return null;
-                        }
-                        else
-                        {
-                            byte[] result = www.downloadHandler.data;
-                            Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
-                            using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
-                            {
-                                if (!SourceStream.CanWrite)
-                                {
-                                    Debug.LogError("Unable to write to the downloads directory");
-                                    PrintErrorToScreen("Unable to write to the downloads directory");
-                                    ResetSceneOnFail();
-                                    yield break;
-                                }
-                                else
-                                {
-                                    SourceStream.Seek(0, SeekOrigin.End);
-                                    Task task = SourceStream.WriteAsync(result, 0, result.Length);
-                                    yield return new WaitUntil(() => task.IsCompleted);
-                                }
-                            }
-                        }
+    IEnumerator FetchImage(string imageFetchURL, WWWForm form)
+    {
+        using (var w = UnityWebRequest.Post(imageFetchURL, form))
+        {
+            Debug.Log("reached to 322 line");
+            Debug.Log("imageFetchURL: " + imageFetchURL);
+            yield return w.SendWebRequest();
+            if (w.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(w.error);
+                PrintErrorToScreen("Something went wrong while trying to get image file URL.");
+                ResetSceneOnFail();
+                yield break;
+            }
+            else
+            {
+                Debug.Log("finished");
+                text2ImageResponseBody = JsonUtility.FromJson<Text2ImageResponseBody>(w.downloadHandler.text);
+                Debug.Log("text2ImageResponseBody.image_file: " + text2ImageResponseBody.img_file);
 
-                    }
-                }
+                StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text23DHostURL + text2ImageResponseBody.img_file, text2ImageResponseBody.asset_name));
+                
             }
         }
-        
 
-        try
+    }
+
+    IEnumerator Fetcher(string hostURL, string objectFetchURL, WWWForm form)
+    {
+        using (var w = UnityWebRequest.Post(objectFetchURL, form))
         {
-            // extract file
-            string extractPath = Application.persistentDataPath;
-            statusTextVariable.text = "Extracting the compressed object...";
-            ZipFile.ExtractToDirectory(zipPath, extractPath);
-        }
-        catch
-        {
-            Debug.LogError("failed to extract downloaded zip file.");
-            PrintErrorToScreen("failed to extract downloaded object zip file.");
-            File.Delete(zipPath);
-            ResetSceneOnFail();
-            yield break;
+            Debug.Log(objectFetchURL);
+            yield return w.SendWebRequest();
+            if (w.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(w.error);
+                PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
+                ResetSceneOnFail();
+                yield break;
+            }
+            else
+            {
+                Debug.Log("finished");
+                zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
+
+                // now download the file
+                zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
+                statusTextVariable.text = "Downloading the compressed object...";
+                using (UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
+                {
+
+                    yield return www.SendWebRequest();
+                    if (www.result != UnityWebRequest.Result.Success)
+                    {
+                        Debug.LogError(www.error);
+                        PrintErrorToScreen("Something went wrong while trying to download object zip file.");
+                        ResetSceneOnFail();
+                        yield return null;
+                    }
+                    else
+                    {
+                        byte[] result = www.downloadHandler.data;
+                        Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
+                        using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
+                        {
+                            if (!SourceStream.CanWrite)
+                            {
+                                Debug.LogError("Unable to write to the downloads directory");
+                                PrintErrorToScreen("Unable to write to the downloads directory");
+                                ResetSceneOnFail();
+                                yield break;
+                            }
+                            else
+                            {
+                                SourceStream.Seek(0, SeekOrigin.End);
+                                Task task = SourceStream.WriteAsync(result, 0, result.Length);
+                                yield return new WaitUntil(() => task.IsCompleted);
+                            }
+                        }
+                    }
+
+                }
+            }
         }
     }
 
@@ -396,6 +491,25 @@ public class StreamOBJImporter : MonoBehaviour {
         }
     }
 
+    public void GetObjImage()
+    {
+        StartCoroutine(RenderDownloadedMesh(objectName, InputMode.textToImage));
+        var errorCount = errorScrollbarContainer.transform.childCount;
+        for (int i = 0; i < errorCount; i++)
+        {
+            Destroy(errorScrollbarContainer.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void GetMeshFromImgAssetName()
+    {
+        StartCoroutine(RenderDownloadedMesh(objectName, InputMode.imageAssetName));
+        var errorCount = errorScrollbarContainer.transform.childCount;
+        for (int i = 0; i < errorCount; i++)
+        {
+            Destroy(errorScrollbarContainer.transform.GetChild(i).gameObject);
+        }
+    }
 
     private void _OnValueChanged(bool enabled)
     {

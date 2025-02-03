@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class MainScript : MonoBehaviour
 {
     public StreamOBJImporter streamOBJImporter;
+    public ImageFetcher imageFetcher;
     //public enum InputMethod { DropdownInput, VoiceInput};
     //public InputMethod inputMethod;
     [SerializeField] GameObject eventSystemUnity;
@@ -60,5 +61,10 @@ public class MainScript : MonoBehaviour
     {
         streamOBJImporter.objectName = prompt;
         streamOBJImporter.GetObjMesh();
+    }
+    public void ProcessUserPromptForImage(string prompt)
+    {
+        streamOBJImporter.objectName = prompt;
+        streamOBJImporter.GetObjImage();
     }
 }
