@@ -9,12 +9,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class StreamOBJImporter : MonoBehaviour {
+public class StreamOBJImporter : MonoBehaviour
+{
     public string objectName;
     [SerializeField] private string predefinedObjHostURL = "http://100.64.0.1:5000/";
     [SerializeField] private string text23DHostURL = null;
     [SerializeField] private string apiVersion = "v0";
-    
+
     [SerializeField] private TextMeshProUGUI statusTextVariable;
     [SerializeField] private GameObject errorTextPrefab;
     [SerializeField] private GameObject errorScrollbarContainer;
@@ -24,7 +25,7 @@ public class StreamOBJImporter : MonoBehaviour {
     [SerializeField] private GameObject grabbableObjContainerPrefab;
     [SerializeField] private GameObject objPrefabPlaceholderAR;
     [SerializeField] private GameObject objPrefabPlaceholderVR;
-    [SerializeField] private Toggle VR2ARToggleButton;
+    [SerializeField] private _ToggleMaker VR2ARToggleButton;
     [SerializeField] private GameObject envBoundingCube;
     [SerializeField] private MainScript mainScript;
     [SerializeField] private ImageFetcher imageFetcher;
@@ -40,10 +41,6 @@ public class StreamOBJImporter : MonoBehaviour {
     private string image23DGenURL;
     private string text2ImageGenURL;
 
-    //private MemoryStream obj_memStream;
-    //private MemoryStream mtl_memStream;
-    //private MemoryStream tex_memStream;
-
     [System.Serializable]
     public class ComponentURLs
     {
@@ -55,9 +52,10 @@ public class StreamOBJImporter : MonoBehaviour {
     //private ComponentURLs componentURLs;
     //private Stream[] objComponentsMemStreams;
 
-	void Start () { 
+    void Start()
+    {
         objFileFetchURL = predefinedObjHostURL + apiVersion + "/download-asset/"; // Replace with your API endpoint
-        objZipFetchURL =  predefinedObjHostURL + apiVersion + "/download-asset-compressed/";
+        objZipFetchURL = predefinedObjHostURL + apiVersion + "/download-asset-compressed/";
         image23DGenURL = text23DHostURL + apiVersion + "/img-2-3d/";
         text2ImageGenURL = text23DHostURL + apiVersion + "/text-2-img/";
         //objComponentsMemStreams = new Stream[3];
@@ -79,9 +77,10 @@ public class StreamOBJImporter : MonoBehaviour {
         errorTextObj.GetComponent<TextMeshProUGUI>().text = $"-> {message}";
     }
 
-    private IEnumerator RenderDownloadedMesh(string objName, InputMode inputMode){
-        
-        
+    private IEnumerator RenderDownloadedMesh(string objName, InputMode inputMode)
+    {
+
+
         try
         {
             statusPanel?.SetActive(true);
@@ -90,7 +89,7 @@ public class StreamOBJImporter : MonoBehaviour {
         finally
         { }
 
-        
+
 
 
         try
@@ -130,75 +129,45 @@ public class StreamOBJImporter : MonoBehaviour {
                 }
             }
 
-            }
-            catch (System.Exception e)
+        }
+        catch (System.Exception e)
+        {
+            if (inputMode != InputMode.textToImage)
             {
                 if (inputMode != InputMode.textToImage)
                 {
-                    if (inputMode != InputMode.textToImage)
-                    {
-                        Debug.Log("There is some issue was rendering the object.");
-                        Debug.LogError(e);
-                        PrintErrorToScreen("There was some issue in rendering the object.");
-                    }
+                    Debug.Log("There is some issue was rendering the object.");
+                    Debug.LogError(e);
+                    PrintErrorToScreen("There was some issue in rendering the object.");
+                }
+            }
+        }
+        finally
+        {
+            try
+            {
+                if (inputMode != InputMode.textToImage)
+                    Directory.Delete(downloadedMeshDirPath, true);
+            }
+            catch
+            {
+                if (inputMode != InputMode.textToImage)
+                {
+                    Debug.LogError("Unable to delete extracted mesh directory");
+                    PrintErrorToScreen("Unable to delete extracted mesh directory");
                 }
             }
             finally
             {
-
-            //currentBc.center = new Vector3(0f, (boundsOfLoadedObj.size.y / 2), 0f);
-            
-
-            
-                try
-                {
-                    if (inputMode != InputMode.textToImage)
-                        Directory.Delete(downloadedMeshDirPath, true);
-                }
-                catch
-                {
-                if (inputMode != InputMode.textToImage)
-                    {
-                        Debug.LogError("Unable to delete extracted mesh directory");
-                        PrintErrorToScreen("Unable to delete extracted mesh directory");
-                    }
-                }
-                //try
-                //{
-                //    File.Delete(zipPath);
-                //}
-                //catch
-                //{
-                //    Debug.LogError("Unable to delete downloaded zipfile");
-                //    PrintErrorToScreen("Unable to delete downloaded zipfile");
-                //}
-                finally
-                {
-                    try { statusPanel?.SetActive(false); }
-                    catch { }
-                    statusTextVariable.text = "Load";
-                }
-
+                try { statusPanel?.SetActive(false); }
+                catch { }
+                statusTextVariable.text = "Load";
             }
 
-            //Rigidbody currentRb  = loadedObj.AddComponent<Rigidbody>();
-            //currentRb.useGravity = false;
-            //currentRb.isKinematic = true;
-            //currentRb.automaticCenterOfMass = true;
-            //currentRb.mass = 1;
-            //currentRb.angularDamping = 0.5f;
-        
+        }
+
 
     }
-
-    //private IEnumerator RenderStreamedMesh(string objName){
-    //    yield return StartCoroutine(GetObjComponentsURLs(objName));
-    //    yield return StartCoroutine(DownloadFile(hostURL + componentURLs.mtl_file, 0)); // mtl_file
-    //    yield return StartCoroutine(DownloadFile(hostURL + componentURLs.tex_file, 1)); // tex_file
-    //    yield return StartCoroutine(DownloadFile(hostURL + componentURLs.obj_file, 2)); // obj_file
-    //    Debug.Log("now running ObjLoader......");
-    //    var loadedObj = new OBJLoader().Load(objComponentsMemStreams[2], objComponentsMemStreams[0]);
-    //}
 
     private Bounds _GetChildRendererBounds(GameObject go)
     {
@@ -209,43 +178,12 @@ public class StreamOBJImporter : MonoBehaviour {
             Bounds bounds = renderers[0].bounds;
             foreach (var rend in renderers)
             {
-                    bounds.Encapsulate(rend.bounds);
+                bounds.Encapsulate(rend.bounds);
             }
             return bounds;
         }
         else { return new Bounds(); }
     }
-
-    //private IEnumerator GetObjComponentsURLs(string objName)
-    //{
-    //    WWWForm form = new WWWForm();
-    //    form.AddField("asset_name", objName);
-    //    using (var w = UnityWebRequest.Post(objFileFetchURL, form))
-    //    {
-    //        yield return w.SendWebRequest();
-    //        if (w.result != UnityWebRequest.Result.Success) {
-    //            Debug.Log(w.error);
-    //        }
-    //        else {
-    //            Debug.Log("finished");
-    //            componentURLs = JsonUtility.FromJson<ComponentURLs>(w.downloadHandler.text);
-    //        }
-    //    }
-    //}
-
-    //private IEnumerator DownloadFile(string fileURL, int streamsArrayIndex){
-    //    Debug.Log("Downloading a file...");
-    //    MemoryStream textStream;
-    //    using(var www = new WWW(fileURL)){
-    //        yield return www;
-    //        textStream = new MemoryStream(Encoding.UTF8.GetBytes(www.text));
-    //        Debug.Log("downloading for "+streamsArrayIndex+" done! ");
-    //        objComponentsMemStreams[streamsArrayIndex] = textStream;
-    //        Debug.Log(Encoding.UTF8.GetByteCount(www.text));
-    //    }
-        
-    //}
-
 
     [System.Serializable]
     public class ZipURL
@@ -272,7 +210,8 @@ public class StreamOBJImporter : MonoBehaviour {
     }
 
     // Downloads zip file from server to persistent path and returns the folder path
-    private IEnumerator DownloadAndExtractZip(string objName, InputMode inputMode){
+    private IEnumerator DownloadAndExtractZip(string objName, InputMode inputMode)
+    {
         WWWForm form = new WWWForm();
         string objectFetchURL = "";
         string hostURL = "";
@@ -295,7 +234,7 @@ public class StreamOBJImporter : MonoBehaviour {
 
         }
 
-        else if(inputMode == InputMode.imageAssetName)
+        else if (inputMode == InputMode.imageAssetName)
         {
             form.AddField("assetname", objName);
             objectFetchURL = image23DGenURL;
@@ -304,7 +243,7 @@ public class StreamOBJImporter : MonoBehaviour {
 
             yield return Fetcher(hostURL, objectFetchURL, form);
         }
-        else if(inputMode == InputMode.textToImage)
+        else if (inputMode == InputMode.textToImage)
         {
             Debug.Log("reached to 291 line");
             form.AddField("prompt", objName);
@@ -315,30 +254,30 @@ public class StreamOBJImporter : MonoBehaviour {
             yield return FetchImage(objectFetchURL, form);
         }
 
-        
-            try
+
+        try
+        {
+            if (inputMode != InputMode.textToImage)
             {
-                if (inputMode != InputMode.textToImage)
-                {
-                    // extract file
-                    string extractPath = Application.persistentDataPath;
-                    statusTextVariable.text = "Extracting the compressed object...";
-                    ZipFile.ExtractToDirectory(zipPath, extractPath);
-                }
+                // extract file
+                string extractPath = Application.persistentDataPath;
+                statusTextVariable.text = "Extracting the compressed object...";
+                ZipFile.ExtractToDirectory(zipPath, extractPath);
             }
-            catch
+        }
+        catch
+        {
+            if (inputMode != InputMode.textToImage)
             {
-                if (inputMode != InputMode.textToImage)
-                {
-                    Debug.LogError("failed to extract downloaded zip file.");
-                    PrintErrorToScreen("failed to extract downloaded object zip file.");
-                    File.Delete(zipPath);
-                    ResetSceneOnFail();
-                    yield break;
-                }
+                Debug.LogError("failed to extract downloaded zip file.");
+                PrintErrorToScreen("failed to extract downloaded object zip file.");
+                File.Delete(zipPath);
+                ResetSceneOnFail();
+                yield break;
             }
-        
-        
+        }
+
+
     }
 
 
@@ -363,7 +302,7 @@ public class StreamOBJImporter : MonoBehaviour {
                 Debug.Log("text2ImageResponseBody.image_file: " + text2ImageResponseBody.img_file);
 
                 StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text23DHostURL + text2ImageResponseBody.img_file, text2ImageResponseBody.asset_name));
-                
+
             }
         }
 
@@ -428,14 +367,15 @@ public class StreamOBJImporter : MonoBehaviour {
         }
     }
 
-    private void OnApplicationQuit() {
+    private void OnApplicationQuit()
+    {
         try
         {
             Directory.Delete(downloadedMeshDirPath, true);
             File.Delete(zipPath);
         }
         catch { }
-        
+
     }
 
     [System.Serializable]
@@ -472,10 +412,11 @@ public class StreamOBJImporter : MonoBehaviour {
     //    StartCoroutine(UploadFileAndConvert("abc.png", "/home/raghav/Downloads/spatialsuiteSystem1.drawio (2).png"));
     //}
 
-    public void DownloadExistingObject(){
+    public void DownloadExistingObject()
+    {
         StartCoroutine(RenderDownloadedMesh(objectName, InputMode.objectName));
         var errorCount = errorScrollbarContainer.transform.childCount;
-        for(int i=0; i<errorCount; i++)
+        for (int i = 0; i < errorCount; i++)
         {
             Destroy(errorScrollbarContainer.transform.GetChild(i).gameObject);
         }

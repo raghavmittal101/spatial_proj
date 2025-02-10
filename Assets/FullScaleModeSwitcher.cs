@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class FullScaleModeSwitcher : MonoBehaviour
 {
     [SerializeField] private GameObject boundingBox;
-    [SerializeField] private Toggle toggleButton;
+    [SerializeField] private _ToggleMaker toggleButton;
     [SerializeField] private Transform pointHighliter;
     [SerializeField] private OVRCameraRig oVRCameraRig;
     //[SerializeReference] private GameObject CeilingObj;

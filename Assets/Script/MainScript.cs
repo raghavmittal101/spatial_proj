@@ -48,7 +48,7 @@ public class MainScript : MonoBehaviour
     {
         foreach (var i in valueInDropdown)
         {
-            if(transcription == i)
+            if (transcription == i)
             {
                 Debug.Log($"The object name on the server should be \"{objNameOnServer[valueInDropdown.IndexOf(i)]}\"");
                 streamOBJImporter.objectName = objNameOnServer[valueInDropdown.IndexOf(i)];

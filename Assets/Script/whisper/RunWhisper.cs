@@ -26,7 +26,7 @@ public class RunWhisper : MonoBehaviour
 
     private string serverUrl = "https://sparrow-amazed-annually.ngrok-free.app/transcribe"; // URL of the Python server
 
-   
+
     public void Transcribe()
     {
 
@@ -75,7 +75,7 @@ public class RunWhisper : MonoBehaviour
             byte[] wavData = ConvertAudioClipToWav(audioClip);
             fileStream.Write(wavData, 0, wavData.Length);
         }
-        
+
         Debug.Log("Audio saved to: " + filePath);
         return filePath;
     }
@@ -136,7 +136,7 @@ public class RunWhisper : MonoBehaviour
     /// <param name="filePath">The path to the WAV file to upload.</param>
     public IEnumerator SendAudioForTranscription(string filePath)
     {
-        
+
 
         if (!File.Exists(filePath))
         {

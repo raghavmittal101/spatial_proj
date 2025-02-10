@@ -18,13 +18,14 @@ public class ImageFetcher : MonoBehaviour
 
     [SerializeField] GameObject imageButtonPrefab;
     [SerializeField] GameObject imageContainer;
+    [SerializeField] GameObject imageContainerPanel;
     [SerializeField] Button generateImageButton;
     [SerializeField] MainScript mainScript;
     [SerializeField] TMPro.TMP_InputField inputField;
     [SerializeField] StreamOBJImporter streamOBJImporter;
 
     public string imageUrl = "https://sample-videos.com/img/Sample-png-image-1mb.png"; // Set your image URL here
-    private  Button button; // Assign the Button in the Inspector
+    private Button button; // Assign the Button in the Inspector
 
     //public void ShowImageInUI(string url, string assetname)
     //{
@@ -56,6 +57,7 @@ public class ImageFetcher : MonoBehaviour
                 {
                     button.image.sprite = sprite; // Assign the sprite to the button
                 }
+                imageContainerPanel.SetActive(true);
             }
             else
             {
