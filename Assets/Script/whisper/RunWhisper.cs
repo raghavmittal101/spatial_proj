@@ -24,15 +24,26 @@ public class RunWhisper : MonoBehaviour
     // Maximum size of audioClip (30s at 16kHz)
     const int maxSamples = 30 * 16000;
 
-    private string serverUrl = "https://sparrow-amazed-annually.ngrok-free.app/transcribe"; // URL of the Python server
+    public string serverUrl; // URL of the Python server
+    private string endpoint = "transcribe";
 
-
+    private void Start()
+    {
+        serverUrl = serverUrl + endpoint;
+    }
     public void Transcribe()
     {
-
-        // Reset output string (transcript)
-        outputString = "";
-        SaveAndSendAudioClip();
+        try
+        {
+            // Reset output string (transcript)
+            outputString = "";
+            SaveAndSendAudioClip();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+        
     }
 
     void LoadAudio()
@@ -59,25 +70,26 @@ public class RunWhisper : MonoBehaviour
 
     private string SaveRecordingAsWav()
     {
-        if (audioClip == null)
+        try
         {
-            Debug.LogError("No audio recorded to save.");
-            return null;
+            string filePath = Path.Combine(Application.persistentDataPath, "recordedAudio.wav");
+            if (File.Exists(filePath)) File.Delete(filePath);
+            LoadAudio();
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+
+                byte[] wavData = ConvertAudioClipToWav(audioClip);
+                fileStream.Write(wavData, 0, wavData.Length);
+            }
+
+            Debug.Log("Audio saved to: " + filePath);
+            return filePath;
         }
-
-        string filePath = Path.Combine(Application.persistentDataPath, "recordedAudio.wav");
-        if (File.Exists(filePath)) File.Delete(filePath);
-        LoadAudio();
-
-        using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+        catch(Exception e)
         {
-
-            byte[] wavData = ConvertAudioClipToWav(audioClip);
-            fileStream.Write(wavData, 0, wavData.Length);
+            throw e;
         }
-
-        Debug.Log("Audio saved to: " + filePath);
-        return filePath;
     }
 
 
@@ -141,9 +153,8 @@ public class RunWhisper : MonoBehaviour
         if (!File.Exists(filePath))
         {
             Debug.LogError("Audio file not found: " + filePath);
-            yield break;
+            throw new FileNotFoundException("Audio file not found", filePath);
         }
-
         byte[] audioData = File.ReadAllBytes(filePath);
         string fileName = Path.GetFileName(filePath);
         Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -177,14 +188,23 @@ public class RunWhisper : MonoBehaviour
         {
 
             Debug.LogError(wr.downloadHandler.text);
-            Debug.LogError("Error during transcription: " + wr.error);
+            //throw new SystemException(wr.error);
+            speechRecognitionController.onError.Invoke("Something went wrong. Check you network connection.");
         }
     }
 
     public void SaveAndSendAudioClip()
     {
-        string path = SaveRecordingAsWav();
-        StartCoroutine(SendAudioForTranscription(path));
+        try
+        {
+            string path = SaveRecordingAsWav();
+            StartCoroutine(SendAudioForTranscription(path));
+        }
+        catch(Exception e)
+        {
+            throw e;
+        }
+        
     }
 
 

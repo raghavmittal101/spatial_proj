@@ -20,6 +20,7 @@ public class StreamOBJImporter : MonoBehaviour
     [SerializeField] private GameObject errorTextPrefab;
     [SerializeField] private GameObject errorScrollbarContainer;
     [SerializeField] private GameObject statusPanel;
+    [SerializeField] private GameObject mainPanel;
 
     private GameObject objPrefabPlaceholder;
     [SerializeField] private GameObject grabbableObjContainerPrefab;
@@ -71,7 +72,7 @@ public class StreamOBJImporter : MonoBehaviour
         statusTextVariable.text = "Load";
     }
 
-    private void PrintErrorToScreen(string message)
+    public void PrintErrorToScreen(string message)
     {
         var errorTextObj = Instantiate(errorTextPrefab, errorScrollbarContainer.transform);
         errorTextObj.GetComponent<TextMeshProUGUI>().text = $"-> {message}";
@@ -84,6 +85,7 @@ public class StreamOBJImporter : MonoBehaviour
         try
         {
             statusPanel?.SetActive(true);
+            mainPanel?.SetActive(false);
             yield return StartCoroutine(DownloadAndExtractZip(objName, inputMode));
         }
         finally
@@ -159,7 +161,7 @@ public class StreamOBJImporter : MonoBehaviour
             }
             finally
             {
-                try { statusPanel?.SetActive(false); }
+                try { statusPanel?.SetActive(false); mainPanel?.SetActive(true); }
                 catch { }
                 statusTextVariable.text = "Load";
             }
@@ -251,7 +253,7 @@ public class StreamOBJImporter : MonoBehaviour
             hostURL = text23DHostURL;
             statusTextVariable.text = "Generating the object images. This may take some time...";
 
-            yield return FetchImage(objectFetchURL, form);
+            yield return FetchImage(objectFetchURL, form, objName);
         }
 
 
@@ -281,7 +283,7 @@ public class StreamOBJImporter : MonoBehaviour
     }
 
 
-    IEnumerator FetchImage(string imageFetchURL, WWWForm form)
+    IEnumerator FetchImage(string imageFetchURL, WWWForm form, string objName)
     {
         using (var w = UnityWebRequest.Post(imageFetchURL, form))
         {
@@ -301,7 +303,7 @@ public class StreamOBJImporter : MonoBehaviour
                 text2ImageResponseBody = JsonUtility.FromJson<Text2ImageResponseBody>(w.downloadHandler.text);
                 Debug.Log("text2ImageResponseBody.image_file: " + text2ImageResponseBody.img_file);
 
-                StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text23DHostURL + text2ImageResponseBody.img_file, text2ImageResponseBody.asset_name));
+                StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text23DHostURL + text2ImageResponseBody.img_file, text2ImageResponseBody.asset_name, objName));
 
             }
         }

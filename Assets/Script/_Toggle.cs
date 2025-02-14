@@ -45,19 +45,21 @@ public class _ToggleMaker : MonoBehaviour
     {
         toggleState = false;
         onValueChanged.Invoke(toggleState);
-        if (text != null)
-            text.color = button.colors.normalColor;
         if (image != null)
             image.color = button.colors.normalColor;
+        else if (text != null)
+            text.color = button.colors.normalColor;
+        
     }
     public void Select()
     {
         onSelect.Invoke(transform);
         toggleState = true;
         onValueChanged.Invoke(toggleState);
-        if (text != null)
-            text.color = button.colors.pressedColor;
         if (image != null)
             image.color = button.colors.pressedColor;
+        else if (text != null)
+            text.color = button.colors.pressedColor;
+        
     }
 }

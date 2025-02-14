@@ -25,7 +25,6 @@ public class ImageFetcher : MonoBehaviour
     [SerializeField] StreamOBJImporter streamOBJImporter;
 
     public string imageUrl = "https://sample-videos.com/img/Sample-png-image-1mb.png"; // Set your image URL here
-    private Button button; // Assign the Button in the Inspector
 
     //public void ShowImageInUI(string url, string assetname)
     //{
@@ -36,7 +35,7 @@ public class ImageFetcher : MonoBehaviour
     {
         generateImageButton.onClick.AddListener(ProcessTextToImage);
     }
-    public IEnumerator DownloadImageAndSetTheButton(string url, string assetname)
+    public IEnumerator DownloadImageAndSetTheButton(string url, string assetname, string prompt)
     {
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
@@ -47,16 +46,19 @@ public class ImageFetcher : MonoBehaviour
                 Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
                 Sprite sprite = ConvertTextureToSprite(texture);
 
-                GameObject buttonObj = GameObject.Instantiate(imageButtonPrefab, imageContainer.GetComponent<Transform>());
-                button = buttonObj.GetComponent<Button>();
-                buttonObj.name = assetname;
+                GameObject prefabObj = Instantiate(imageButtonPrefab, imageContainer.GetComponent<Transform>());
+                prefabObj.name = assetname;
                 streamOBJImporter.objectName = assetname;
-                buttonObj.GetComponent<Button>().onClick.AddListener(streamOBJImporter.GetMeshFromImgAssetName);
-
+                var button = prefabObj.GetComponent<Button>();
+                button.onClick.AddListener(streamOBJImporter.GetMeshFromImgAssetName);
+                var image = prefabObj.transform.Find("ImageHolder").GetComponent<Image>();
                 if (button != null)
                 {
-                    button.image.sprite = sprite; // Assign the sprite to the button
+                    image.sprite = sprite; // Assign the sprite to the button
                 }
+
+                var buttonText = prefabObj.transform.Find("Text (TMP)").GetComponent<TMPro.TMP_Text>();
+                buttonText.text = prompt;
                 imageContainerPanel.SetActive(true);
             }
             else

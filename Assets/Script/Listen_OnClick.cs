@@ -2,10 +2,10 @@ using UnityEngine;
 using Oculus.Voice.Dictation;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Listen_OnClick : MonoBehaviour
 {
-    public AppDictationExperience appVoiceDictationExperience;
     public TMPro.TextMeshProUGUI speakButtonText;
     //public TMPro.TextMeshProUGUI transcriptionText;
     public TMPro.TMP_InputField transcriptionText;
@@ -21,11 +21,6 @@ public class Listen_OnClick : MonoBehaviour
         //FullTranscriptionAction += mainScript.ProcessUserInput;
         FullTranscriptionAction += PrintFinalTranscription;
 
-        appVoiceDictationExperience.DictationEvents.OnStartListening.AddListener(OnStartListening);
-        appVoiceDictationExperience.DictationEvents.OnStoppedListening.AddListener(OnStoppedListening);
-        
-        appVoiceDictationExperience.DictationEvents.OnPartialTranscription.AddListener(PartialTranscriptionAction);
-        appVoiceDictationExperience.DictationEvents.OnFullTranscription.AddListener(FullTranscriptionAction);
 
         speakButton.onClick.AddListener(ActivateVoiceOnClick);
 
@@ -33,6 +28,7 @@ public class Listen_OnClick : MonoBehaviour
         whisperSpeechRecognitionController.onStartRecording.AddListener(OnStartListening);
         whisperSpeechRecognitionController.onSendRecording.AddListener(OnSendRecording);
         whisperSpeechRecognitionController.onResponse.AddListener(FullTranscriptionAction);
+        whisperSpeechRecognitionController.onError.AddListener(OnError);
     }
     private void OnStartListening()
     {
@@ -54,7 +50,6 @@ public class Listen_OnClick : MonoBehaviour
     {
         Debug.Log("Clicked on button");
         transcriptionText.text = "";
-        appVoiceDictationExperience.Activate();
     }
 
     
@@ -69,5 +64,17 @@ public class Listen_OnClick : MonoBehaviour
     {
         transcriptionText.SetTextWithoutNotify(a);
         OnStoppedListening();
+    }
+
+    private void OnError(string a)
+    {
+        speakButtonText.text = a;
+        OnStoppedListening();
+    }
+
+    private IEnumerator WaitForSec(float t)
+    {
+        WaitForSeconds waitForSeconds = new(t);
+        yield return waitForSeconds;
     }
 }

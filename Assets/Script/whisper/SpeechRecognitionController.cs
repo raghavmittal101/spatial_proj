@@ -8,6 +8,7 @@ public class SpeechRecognitionController : MonoBehaviour
 {
     public UnityEvent onStartRecording;
     public UnityEvent onSendRecording;
+    public UnityEvent<string> onError;
     public UnityEvent<string> onResponse;
     [SerializeField] private TMP_Dropdown m_deviceDropdown;
     [SerializeField] private Image m_progress;
@@ -70,10 +71,17 @@ public class SpeechRecognitionController : MonoBehaviour
     /// </summary>
     private void StartRecording()
     {
-        m_clip = Microphone.Start(m_deviceName, false, listeningWindowTime, 16000);
-        m_recording = true;
-        onStartRecording.Invoke();
-        Debug.Log("!!!!!!!!Recording.....");
+        try
+        {
+            m_clip = Microphone.Start(m_deviceName, false, listeningWindowTime, 16000);
+            m_recording = true;
+            onStartRecording.Invoke();
+            Debug.Log("!!!!!!!!Recording.....");
+        }
+        catch
+        {
+            onError.Invoke("Something went wrong. Please ensure your microphone is working.");
+        }
     }
 
     /// <summary>
@@ -95,7 +103,16 @@ public class SpeechRecognitionController : MonoBehaviour
     {
         onSendRecording.Invoke();
         runWhisper.audioClip = m_clip;
-        runWhisper.Transcribe();
+        try
+        {
+            runWhisper.Transcribe();
+            Debug.Log("reached line 109");
+        }
+        catch(System.Exception e)
+        {
+            Debug.LogError(e.Message);
+            onError.Invoke("Something went wrong. Please check your network connection and microphone.");
+        }
     }
 
     private void Update()
