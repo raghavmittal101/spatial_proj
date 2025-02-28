@@ -1,0 +1,81 @@
+\doxysection{MTLLoader Class Reference}
+\hypertarget{class_m_t_l_loader}{}\label{class_m_t_l_loader}\index{MTLLoader@{MTLLoader}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual Texture2D \mbox{\hyperlink{class_m_t_l_loader_ab8aa006bd6e6add8141222582c00aea0}{Texture\+Load\+Function}} (string path, bool is\+Normal\+Map)
+\begin{DoxyCompactList}\small\item\em The texture loading function. Overridable for stream loading purposes. \end{DoxyCompactList}\item 
+Dictionary$<$ string, Material $>$ \mbox{\hyperlink{class_m_t_l_loader_a259b805cda6d5a31fb9855126824b250}{Load}} (Stream input)
+\begin{DoxyCompactList}\small\item\em Loads a \texorpdfstring{$\ast$}{*}.mtl file. \end{DoxyCompactList}\item 
+Dictionary$<$ string, Material $>$ \mbox{\hyperlink{class_m_t_l_loader_a23f6c5d33a22fb19c47a46dbdd7915c2}{Load}} (string path)
+\begin{DoxyCompactList}\small\item\em Loads a \texorpdfstring{$\ast$}{*}.mtl file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_m_t_l_loader_acaf4e3c184c87c81dbd3de4d4c82abd0}\label{class_m_t_l_loader_acaf4e3c184c87c81dbd3de4d4c82abd0} 
+List$<$ string $>$ {\bfseries Search\+Paths} = new List$<$string$>$() \{ "{}\%File\+Name\%\+\_\+\+Textures"{}, string.\+Empty\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_m_t_l_loader_a259b805cda6d5a31fb9855126824b250}\index{MTLLoader@{MTLLoader}!Load@{Load}}
+\index{Load@{Load}!MTLLoader@{MTLLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_m_t_l_loader_a259b805cda6d5a31fb9855126824b250} 
+Dictionary$<$ string, Material $>$ MTLLoader.\+Load (\begin{DoxyParamCaption}\item[{Stream}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Loads a \texorpdfstring{$\ast$}{*}.mtl file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input stream from the MTL file\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Dictionary containing loaded materials
+\end{DoxyReturn}
+\Hypertarget{class_m_t_l_loader_a23f6c5d33a22fb19c47a46dbdd7915c2}\index{MTLLoader@{MTLLoader}!Load@{Load}}
+\index{Load@{Load}!MTLLoader@{MTLLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_m_t_l_loader_a23f6c5d33a22fb19c47a46dbdd7915c2} 
+Dictionary$<$ string, Material $>$ MTLLoader.\+Load (\begin{DoxyParamCaption}\item[{string}]{path}{}\end{DoxyParamCaption})}
+
+
+
+Loads a \texorpdfstring{$\ast$}{*}.mtl file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The path to the MTL file\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Dictionary containing loaded materials
+\end{DoxyReturn}
+\Hypertarget{class_m_t_l_loader_ab8aa006bd6e6add8141222582c00aea0}\index{MTLLoader@{MTLLoader}!TextureLoadFunction@{TextureLoadFunction}}
+\index{TextureLoadFunction@{TextureLoadFunction}!MTLLoader@{MTLLoader}}
+\doxysubsubsection{\texorpdfstring{TextureLoadFunction()}{TextureLoadFunction()}}
+{\footnotesize\ttfamily \label{class_m_t_l_loader_ab8aa006bd6e6add8141222582c00aea0} 
+virtual Texture2D MTLLoader.\+Texture\+Load\+Function (\begin{DoxyParamCaption}\item[{string}]{path}{, }\item[{bool}]{is\+Normal\+Map}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+The texture loading function. Overridable for stream loading purposes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The path supplied by the OBJ file, converted to OS path seperation\\
+\hline
+{\em is\+Normal\+Map} & Whether the loader is requesting we convert this into a normal map\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Texture2D if found, or NULL if missing
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+OBJImport/MTLLoader.\+cs\end{DoxyCompactItemize}

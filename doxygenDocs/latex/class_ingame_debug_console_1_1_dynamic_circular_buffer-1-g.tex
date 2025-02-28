@@ -1,0 +1,61 @@
+\doxysection{Ingame\+Debug\+Console.\+Dynamic\+Circular\+Buffer\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g}{}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g}\index{IngameDebugConsole.DynamicCircularBuffer$<$ T $>$@{IngameDebugConsole.DynamicCircularBuffer$<$ T $>$}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a01282dc37bd9fe0579c8dcec1e505fb4}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a01282dc37bd9fe0579c8dcec1e505fb4} 
+{\bfseries Dynamic\+Circular\+Buffer} (int initial\+Capacity=2)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_af60fd44a73ef3584701f9810af8648a0}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_af60fd44a73ef3584701f9810af8648a0} 
+void {\bfseries Add\+First} (T value)
+\begin{DoxyCompactList}\small\item\em Inserts the value to the beginning of the collection. \end{DoxyCompactList}\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_adf6d18dcf1d42f2894daa9a632044d26}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_adf6d18dcf1d42f2894daa9a632044d26} 
+void {\bfseries Add} (T value)
+\begin{DoxyCompactList}\small\item\em Adds the value to the end of the collection. \end{DoxyCompactList}\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a54dbc7b20a9656396f5b7a0608e0cbac}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a54dbc7b20a9656396f5b7a0608e0cbac} 
+void {\bfseries Add\+Range} (Dynamic\+Circular\+Buffer$<$ T $>$ other)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ad5d0a68f303db1e395e9e0f1d4e417e8}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ad5d0a68f303db1e395e9e0f1d4e417e8} 
+T {\bfseries Remove\+First} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a181a7e303de0e7b7a211bbb215d69fda}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a181a7e303de0e7b7a211bbb215d69fda} 
+T {\bfseries Remove\+Last} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ad854cadadba9ea972f04f9b425a42992}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ad854cadadba9ea972f04f9b425a42992} 
+int {\bfseries Remove\+All} (Predicate$<$ T $>$ should\+Remove\+Element)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ac27f00d3b81afe3b57f1e09aefc4e9ee}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_ac27f00d3b81afe3b57f1e09aefc4e9ee} 
+int {\bfseries Remove\+All$<$ Y $>$} (Predicate$<$ T $>$ should\+Remove\+Element, Action$<$ T, int $>$ on\+Element\+Index\+Changed, Dynamic\+Circular\+Buffer$<$ Y $>$ synchronized\+Buffer)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a1f90c5e4c95d0128fada79caec8d591a}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a1f90c5e4c95d0128fada79caec8d591a} 
+void {\bfseries Trim\+Start} (int trim\+Count, Action$<$ T $>$ per\+Element\+Callback=null)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a1328c83ddab3bb95e1d85bbaedb06909}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a1328c83ddab3bb95e1d85bbaedb06909} 
+void {\bfseries Trim\+End} (int trim\+Count, Action$<$ T $>$ per\+Element\+Callback=null)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a98c15edf286f97069661302dcb7a82cf}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a98c15edf286f97069661302dcb7a82cf} 
+void {\bfseries Clear} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a904ff856b5a5e2fd04552a72f9385d74}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a904ff856b5a5e2fd04552a72f9385d74} 
+int {\bfseries Index\+Of} (T value)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a56f315a16f124a52420956998fba5ac5}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a56f315a16f124a52420956998fba5ac5} 
+void {\bfseries For\+Each} (Action$<$ T $>$ action)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a0a5917ec8ad026e90177cacc7d15b466}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a0a5917ec8ad026e90177cacc7d15b466} 
+int {\bfseries Count}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a6cf3e5634bef2a8f2d742b83b60696e2}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a6cf3e5634bef2a8f2d742b83b60696e2} 
+int {\bfseries Capacity}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a0ce67c3f9de6dbd5bf53cb9163ee323f}\label{class_ingame_debug_console_1_1_dynamic_circular_buffer-1-g_a0ce67c3f9de6dbd5bf53cb9163ee323f} 
+T {\bfseries this\mbox{[}int index\mbox{]}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+Plugins/\+Ingame\+Debug\+Console/\+Scripts/Circular\+Buffer.\+cs\end{DoxyCompactItemize}

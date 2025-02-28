@@ -1,0 +1,72 @@
+\doxysection{Ingame\+Debug\+Console.\+Debug\+Log\+Manager Class Reference}
+\hypertarget{class_ingame_debug_console_1_1_debug_log_manager}{}\label{class_ingame_debug_console_1_1_debug_log_manager}\index{IngameDebugConsole.DebugLogManager@{IngameDebugConsole.DebugLogManager}}
+Inheritance diagram for Ingame\+Debug\+Console.\+Debug\+Log\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_ingame_debug_console_1_1_debug_log_manager}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_abd9c3955c26eb344e65d288dd2f6158e}\label{class_ingame_debug_console_1_1_debug_log_manager_abd9c3955c26eb344e65d288dd2f6158e} 
+void {\bfseries Show\+Log\+Window} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a630ed2aff1f4f5b1916a966538fca05d}\label{class_ingame_debug_console_1_1_debug_log_manager_a630ed2aff1f4f5b1916a966538fca05d} 
+void {\bfseries Hide\+Log\+Window} ()
+\item 
+void \mbox{\hyperlink{class_ingame_debug_console_1_1_debug_log_manager_aeeae5378f318e8314013d04bd1825701}{Received\+Log}} (string log\+String, string stack\+Trace, Log\+Type log\+Type)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a0788d0529eb2b3a66f2a6153b4e730aa}\label{class_ingame_debug_console_1_1_debug_log_manager_a0788d0529eb2b3a66f2a6153b4e730aa} 
+void {\bfseries Adjust\+Latest\+Pending\+Log} (bool auto\+Expand, bool strip\+Stack\+Trace)
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a070ddd57d260c81dee4278fd4511b887}\label{class_ingame_debug_console_1_1_debug_log_manager_a070ddd57d260c81dee4278fd4511b887} 
+void {\bfseries Clear\+Logs} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_adfad06e3888f83e37b484acae4cc2c59}\label{class_ingame_debug_console_1_1_debug_log_manager_adfad06e3888f83e37b484acae4cc2c59} 
+string {\bfseries Get\+All\+Logs} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a84bf118f64d2fc0b7e79e6a6734e206d}\label{class_ingame_debug_console_1_1_debug_log_manager_a84bf118f64d2fc0b7e79e6a6734e206d} 
+void {\bfseries Save\+Logs\+To\+File} ()
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_ac5b4e693f73043d051a859e471205561}\label{class_ingame_debug_console_1_1_debug_log_manager_ac5b4e693f73043d051a859e471205561} 
+void {\bfseries Save\+Logs\+To\+File} (string file\+Path)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_afe8625cc57ae158747f1eac4e20e1b61}\label{class_ingame_debug_console_1_1_debug_log_manager_afe8625cc57ae158747f1eac4e20e1b61} 
+bool {\bfseries Snap\+To\+Bottom} = true
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_abe44862b883ebe48e53da579332bde8b}\label{class_ingame_debug_console_1_1_debug_log_manager_abe44862b883ebe48e53da579332bde8b} 
+System.\+Action {\bfseries On\+Log\+Window\+Shown}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a6ada4250b3f3bd3c45742fe3e7d8242e}\label{class_ingame_debug_console_1_1_debug_log_manager_a6ada4250b3f3bd3c45742fe3e7d8242e} 
+System.\+Action {\bfseries On\+Log\+Window\+Hidden}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_a4be6c6469d9499cf5e80f0082e988f30}\label{class_ingame_debug_console_1_1_debug_log_manager_a4be6c6469d9499cf5e80f0082e988f30} 
+static \mbox{\hyperlink{class_ingame_debug_console_1_1_debug_log_manager}{Debug\+Log\+Manager}} {\bfseries Instance}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_aff773cc2bbf06e9762829c61e6cbb240}\label{class_ingame_debug_console_1_1_debug_log_manager_aff773cc2bbf06e9762829c61e6cbb240} 
+bool {\bfseries Is\+Log\+Window\+Visible}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_aa17b07dc0d52dfa2021cd1354748c88f}\label{class_ingame_debug_console_1_1_debug_log_manager_aa17b07dc0d52dfa2021cd1354748c88f} 
+bool {\bfseries Popup\+Enabled}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_ingame_debug_console_1_1_debug_log_manager_aeeae5378f318e8314013d04bd1825701}\index{IngameDebugConsole.DebugLogManager@{IngameDebugConsole.DebugLogManager}!ReceivedLog@{ReceivedLog}}
+\index{ReceivedLog@{ReceivedLog}!IngameDebugConsole.DebugLogManager@{IngameDebugConsole.DebugLogManager}}
+\doxysubsubsection{\texorpdfstring{ReceivedLog()}{ReceivedLog()}}
+{\footnotesize\ttfamily \label{class_ingame_debug_console_1_1_debug_log_manager_aeeae5378f318e8314013d04bd1825701} 
+void Ingame\+Debug\+Console.\+Debug\+Log\+Manager.\+Received\+Log (\begin{DoxyParamCaption}\item[{string}]{log\+String}{, }\item[{string}]{stack\+Trace}{, }\item[{Log\+Type}]{log\+Type}{}\end{DoxyParamCaption})}
+
+Enforce max\+Log\+Count in queued logs, as well. That\textquotesingle{}s because when it\textquotesingle{}s exceeded, the oldest queued logs will be removed by Remove\+Oldest\+Logs immediately after they\textquotesingle{}re processed anyways (i.\+e. waste of CPU and RAM).
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+Plugins/\+Ingame\+Debug\+Console/\+Scripts/Debug\+Log\+Manager.\+cs\end{DoxyCompactItemize}

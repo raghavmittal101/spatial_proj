@@ -1,0 +1,109 @@
+\doxysection{Dummiesman.\+OBJLoader Class Reference}
+\hypertarget{class_dummiesman_1_1_o_b_j_loader}{}\label{class_dummiesman_1_1_o_b_j_loader}\index{Dummiesman.OBJLoader@{Dummiesman.OBJLoader}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Game\+Object \mbox{\hyperlink{class_dummiesman_1_1_o_b_j_loader_a94b237348e6d5a1b73be7cc0669f9b7f}{Load}} (Stream input)
+\begin{DoxyCompactList}\small\item\em Load an OBJ file from a stream. No materials will be loaded, and will instead be supplemented by a blank white material. \end{DoxyCompactList}\item 
+Game\+Object \mbox{\hyperlink{class_dummiesman_1_1_o_b_j_loader_af243d1d0ff7de7712a48d0cdb3cda444}{Load}} (Stream input, Stream mtl\+Input)
+\begin{DoxyCompactList}\small\item\em Load an OBJ and MTL file from a stream. \end{DoxyCompactList}\item 
+Game\+Object \mbox{\hyperlink{class_dummiesman_1_1_o_b_j_loader_ab1746d7c5bd93642bd1b580e5abfe79f}{Load}} (string path, string mtl\+Path)
+\begin{DoxyCompactList}\small\item\em Load an OBJ and MTL file from a file path. \end{DoxyCompactList}\item 
+Game\+Object \mbox{\hyperlink{class_dummiesman_1_1_o_b_j_loader_ad5e07fb04a72f87ccd40ac621c3468fc}{Load}} (string path)
+\begin{DoxyCompactList}\small\item\em Load an OBJ file from a file path. This function will also attempt to load the MTL defined in the OBJ file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_dummiesman_1_1_o_b_j_loader_ac3359ce8c0dc1a9333336741d098200e}\label{class_dummiesman_1_1_o_b_j_loader_ac3359ce8c0dc1a9333336741d098200e} 
+Split\+Mode {\bfseries Split\+Mode} = Split\+Mode.\+Object
+\begin{DoxyCompactList}\small\item\em Determines how objects will be created. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_dummiesman_1_1_o_b_j_loader_a94b237348e6d5a1b73be7cc0669f9b7f}\index{Dummiesman.OBJLoader@{Dummiesman.OBJLoader}!Load@{Load}}
+\index{Load@{Load}!Dummiesman.OBJLoader@{Dummiesman.OBJLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_o_b_j_loader_a94b237348e6d5a1b73be7cc0669f9b7f} 
+Game\+Object Dummiesman.\+OBJLoader.\+Load (\begin{DoxyParamCaption}\item[{Stream}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Load an OBJ file from a stream. No materials will be loaded, and will instead be supplemented by a blank white material. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Input OBJ stream\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a Game\+Object represeting the OBJ file, with each imported object as a child.
+\end{DoxyReturn}
+\Hypertarget{class_dummiesman_1_1_o_b_j_loader_af243d1d0ff7de7712a48d0cdb3cda444}\index{Dummiesman.OBJLoader@{Dummiesman.OBJLoader}!Load@{Load}}
+\index{Load@{Load}!Dummiesman.OBJLoader@{Dummiesman.OBJLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_o_b_j_loader_af243d1d0ff7de7712a48d0cdb3cda444} 
+Game\+Object Dummiesman.\+OBJLoader.\+Load (\begin{DoxyParamCaption}\item[{Stream}]{input}{, }\item[{Stream}]{mtl\+Input}{}\end{DoxyParamCaption})}
+
+
+
+Load an OBJ and MTL file from a stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Input OBJ stream\\
+\hline
+\end{DoxyParams}
+/// 
+\begin{DoxyParams}{Parameters}
+{\em mtl\+Input} & Input MTL stream\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a Game\+Object represeting the OBJ file, with each imported object as a child.
+\end{DoxyReturn}
+\Hypertarget{class_dummiesman_1_1_o_b_j_loader_ad5e07fb04a72f87ccd40ac621c3468fc}\index{Dummiesman.OBJLoader@{Dummiesman.OBJLoader}!Load@{Load}}
+\index{Load@{Load}!Dummiesman.OBJLoader@{Dummiesman.OBJLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_o_b_j_loader_ad5e07fb04a72f87ccd40ac621c3468fc} 
+Game\+Object Dummiesman.\+OBJLoader.\+Load (\begin{DoxyParamCaption}\item[{string}]{path}{}\end{DoxyParamCaption})}
+
+
+
+Load an OBJ file from a file path. This function will also attempt to load the MTL defined in the OBJ file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Input OBJ path\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a Game\+Object represeting the OBJ file, with each imported object as a child.
+\end{DoxyReturn}
+\Hypertarget{class_dummiesman_1_1_o_b_j_loader_ab1746d7c5bd93642bd1b580e5abfe79f}\index{Dummiesman.OBJLoader@{Dummiesman.OBJLoader}!Load@{Load}}
+\index{Load@{Load}!Dummiesman.OBJLoader@{Dummiesman.OBJLoader}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_o_b_j_loader_ab1746d7c5bd93642bd1b580e5abfe79f} 
+Game\+Object Dummiesman.\+OBJLoader.\+Load (\begin{DoxyParamCaption}\item[{string}]{path}{, }\item[{string}]{mtl\+Path}{}\end{DoxyParamCaption})}
+
+
+
+Load an OBJ and MTL file from a file path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Input OBJ path\\
+\hline
+\end{DoxyParams}
+/// 
+\begin{DoxyParams}{Parameters}
+{\em mtl\+Path} & Input MTL path\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a Game\+Object represeting the OBJ file, with each imported object as a child.
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+OBJImport/OBJLoader.\+cs\end{DoxyCompactItemize}

@@ -1,0 +1,88 @@
+\doxysection{Dummiesman.\+Image\+Loader Class Reference}
+\hypertarget{class_dummiesman_1_1_image_loader}{}\label{class_dummiesman_1_1_image_loader}\index{Dummiesman.ImageLoader@{Dummiesman.ImageLoader}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_dummiesman_1_1_image_loader_a121f588f830ab7a4161b675176e25549}\label{class_dummiesman_1_1_image_loader_a121f588f830ab7a4161b675176e25549} 
+enum {\bfseries Texture\+Format} \{ \newline
+{\bfseries DDS}
+, {\bfseries TGA}
+, {\bfseries BMP}
+, {\bfseries PNG}
+, \newline
+{\bfseries JPG}
+, {\bfseries CRN}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_dummiesman_1_1_image_loader_aa7f478948280bd688f48e60dae836ab0}{Set\+Normal\+Map}} (ref Texture2D tex)
+\begin{DoxyCompactList}\small\item\em Converts a DirectX normal map to Unitys expected format. \end{DoxyCompactList}\item 
+static Texture2D \mbox{\hyperlink{class_dummiesman_1_1_image_loader_ad483d685766bf4d7e2b691476fd8253f}{Load\+Texture}} (Stream stream, Texture\+Format format)
+\begin{DoxyCompactList}\small\item\em Loads a texture from a stream. \end{DoxyCompactList}\item 
+static Texture2D \mbox{\hyperlink{class_dummiesman_1_1_image_loader_a20b5a035e33c98b5854a7e911fd517fa}{Load\+Texture}} (string fn)
+\begin{DoxyCompactList}\small\item\em Loads a texture from a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_dummiesman_1_1_image_loader_ad483d685766bf4d7e2b691476fd8253f}\index{Dummiesman.ImageLoader@{Dummiesman.ImageLoader}!LoadTexture@{LoadTexture}}
+\index{LoadTexture@{LoadTexture}!Dummiesman.ImageLoader@{Dummiesman.ImageLoader}}
+\doxysubsubsection{\texorpdfstring{LoadTexture()}{LoadTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_image_loader_ad483d685766bf4d7e2b691476fd8253f} 
+static Texture2D Dummiesman.\+Image\+Loader.\+Load\+Texture (\begin{DoxyParamCaption}\item[{Stream}]{stream}{, }\item[{Texture\+Format}]{format}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Loads a texture from a stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & The stream\\
+\hline
+{\em format} & The format {\bfseries{NOT UNITYENGINE.\+TEXTUREFORMAT}}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\Hypertarget{class_dummiesman_1_1_image_loader_a20b5a035e33c98b5854a7e911fd517fa}\index{Dummiesman.ImageLoader@{Dummiesman.ImageLoader}!LoadTexture@{LoadTexture}}
+\index{LoadTexture@{LoadTexture}!Dummiesman.ImageLoader@{Dummiesman.ImageLoader}}
+\doxysubsubsection{\texorpdfstring{LoadTexture()}{LoadTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_image_loader_a20b5a035e33c98b5854a7e911fd517fa} 
+static Texture2D Dummiesman.\+Image\+Loader.\+Load\+Texture (\begin{DoxyParamCaption}\item[{string}]{fn}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Loads a texture from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fn} & \\
+\hline
+{\em normal\+Map} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\Hypertarget{class_dummiesman_1_1_image_loader_aa7f478948280bd688f48e60dae836ab0}\index{Dummiesman.ImageLoader@{Dummiesman.ImageLoader}!SetNormalMap@{SetNormalMap}}
+\index{SetNormalMap@{SetNormalMap}!Dummiesman.ImageLoader@{Dummiesman.ImageLoader}}
+\doxysubsubsection{\texorpdfstring{SetNormalMap()}{SetNormalMap()}}
+{\footnotesize\ttfamily \label{class_dummiesman_1_1_image_loader_aa7f478948280bd688f48e60dae836ab0} 
+static void Dummiesman.\+Image\+Loader.\+Set\+Normal\+Map (\begin{DoxyParamCaption}\item[{ref Texture2D}]{tex}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Converts a DirectX normal map to Unitys expected format. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tex} & Texture to convert\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+OBJImport/\+Texture\+Loader/Image\+Loader.\+cs\end{DoxyCompactItemize}

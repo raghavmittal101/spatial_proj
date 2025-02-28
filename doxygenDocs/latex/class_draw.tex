@@ -1,0 +1,90 @@
+\doxysection{Draw Class Reference}
+\hypertarget{class_draw}{}\label{class_draw}\index{Draw@{Draw}}
+
+
+Handles drawing functionality in VR using Oculus hands. This script allows the user to toggle drawing mode, select stroke types (line or sphere), and save or clear their sketches. It also keeps track of drawing progress.  
+
+
+Inheritance diagram for Draw\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_draw}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_draw_a36355be89a9843b417a509e9bf82d47b}\label{class_draw_a36355be89a9843b417a509e9bf82d47b} 
+enum {\bfseries Stroke\+Type} \{ {\bfseries line}
+, {\bfseries sphere}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_draw_a7a970ee4344a1a59a6a17898cba88018}{Toggle\+Drawing\+Mode}} (bool is\+Drawing\+Mode\+Enabled)
+\begin{DoxyCompactList}\small\item\em Toggles the drawing mode on or off. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_draw_ae21d8c471cb5fb9cfeb2ebd1fdd60691}{Select\+Stroke\+Type}} (int selected\+Index)
+\begin{DoxyCompactList}\small\item\em Selects the type of stroke to draw (line or sphere). \end{DoxyCompactList}\item 
+\Hypertarget{class_draw_ad9bbff853d9777668fc3432f1d5558a5}\label{class_draw_ad9bbff853d9777668fc3432f1d5558a5} 
+void {\bfseries Save\+And\+Clear\+Sketch} ()
+\begin{DoxyCompactList}\small\item\em Saves the sketch data and clears the current sketch from the scene. \end{DoxyCompactList}\item 
+\Hypertarget{class_draw_ab1e7bc115ac5f9028cc3641ec94a0730}\label{class_draw_ab1e7bc115ac5f9028cc3641ec94a0730} 
+void {\bfseries Clear\+Sketch} ()
+\begin{DoxyCompactList}\small\item\em Clears all drawn objects and resets sketch data. \end{DoxyCompactList}\item 
+\Hypertarget{class_draw_adca1e19469594ddc2422839d35c50792}\label{class_draw_adca1e19469594ddc2422839d35c50792} 
+void {\bfseries Save\+Sketch} ()
+\begin{DoxyCompactList}\small\item\em Saves the current sketch data to a CSV file. \end{DoxyCompactList}\item 
+\Hypertarget{class_draw_a7b52ac9442ff9ae0336188f6a7cee2e3}\label{class_draw_a7b52ac9442ff9ae0336188f6a7cee2e3} 
+void {\bfseries Retrieve\+Obj} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_draw_aae89e68ec56c256c5360b3c72432c164}\label{class_draw_aae89e68ec56c256c5360b3c72432c164} 
+bool {\bfseries is\+Drawing\+Mode\+Enabled}
+\item 
+\Hypertarget{class_draw_ab4c1526f7d5c7eafb9bcef9579a308fb}\label{class_draw_ab4c1526f7d5c7eafb9bcef9579a308fb} 
+bool {\bfseries unsaved\+Progress\+Exists}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles drawing functionality in VR using Oculus hands. This script allows the user to toggle drawing mode, select stroke types (line or sphere), and save or clear their sketches. It also keeps track of drawing progress. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_draw_ae21d8c471cb5fb9cfeb2ebd1fdd60691}\index{Draw@{Draw}!SelectStrokeType@{SelectStrokeType}}
+\index{SelectStrokeType@{SelectStrokeType}!Draw@{Draw}}
+\doxysubsubsection{\texorpdfstring{SelectStrokeType()}{SelectStrokeType()}}
+{\footnotesize\ttfamily \label{class_draw_ae21d8c471cb5fb9cfeb2ebd1fdd60691} 
+void Draw.\+Select\+Stroke\+Type (\begin{DoxyParamCaption}\item[{int}]{selected\+Index}{}\end{DoxyParamCaption})}
+
+
+
+Selects the type of stroke to draw (line or sphere). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em selected\+Index} & 0 for line, 1 for sphere.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_draw_a7a970ee4344a1a59a6a17898cba88018}\index{Draw@{Draw}!ToggleDrawingMode@{ToggleDrawingMode}}
+\index{ToggleDrawingMode@{ToggleDrawingMode}!Draw@{Draw}}
+\doxysubsubsection{\texorpdfstring{ToggleDrawingMode()}{ToggleDrawingMode()}}
+{\footnotesize\ttfamily \label{class_draw_a7a970ee4344a1a59a6a17898cba88018} 
+void Draw.\+Toggle\+Drawing\+Mode (\begin{DoxyParamCaption}\item[{bool}]{is\+Drawing\+Mode\+Enabled}{}\end{DoxyParamCaption})}
+
+
+
+Toggles the drawing mode on or off. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Drawing\+Mode\+Enabled} & Boolean to enable or disable drawing mode.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/raghavmittal101/\+Documents/repos/spatial\+\_\+computing\+\_\+suite\+\_\+gitlab/spatial-\/computer-\/suite/\+Assets/\+Script/drawing/Draw\+Script.\+cs\end{DoxyCompactItemize}
