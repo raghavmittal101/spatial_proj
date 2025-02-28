@@ -50,7 +50,7 @@ public class ImageFetcher : MonoBehaviour
                 prefabObj.name = assetname;
                 streamOBJImporter.objectName = assetname;
                 var button = prefabObj.GetComponent<Button>();
-                button.onClick.AddListener(streamOBJImporter.GetMeshFromImgAssetName);
+                button.onClick.AddListener(delegate { streamOBJImporter.GetMeshFromImgAssetName(assetname);  } );
                 var image = prefabObj.transform.Find("ImageHolder").GetComponent<Image>();
                 if (button != null)
                 {

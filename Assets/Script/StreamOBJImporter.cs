@@ -251,7 +251,7 @@ public class StreamOBJImporter : MonoBehaviour
             form.AddField("prompt", objName);
             objectFetchURL = text2ImageGenURL;
             hostURL = text23DHostURL;
-            statusTextVariable.text = "Generating the object images. This may take some time...";
+            statusTextVariable.text = "Generating the object image. This may take some time...";
 
             yield return FetchImage(objectFetchURL, form, objName);
         }
@@ -330,7 +330,7 @@ public class StreamOBJImporter : MonoBehaviour
 
                 // now download the file
                 zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
-                statusTextVariable.text = "Downloading the compressed object...";
+                statusTextVariable.text = "Downloading the generated object...";
                 using (UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
                 {
 
@@ -444,7 +444,7 @@ public class StreamOBJImporter : MonoBehaviour
         }
     }
 
-    public void GetMeshFromImgAssetName()
+    public void GetMeshFromImgAssetName(string objectName)
     {
         StartCoroutine(RenderDownloadedMesh(objectName, InputMode.imageAssetName));
         var errorCount = errorScrollbarContainer.transform.childCount;

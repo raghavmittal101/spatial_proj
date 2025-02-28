@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.UI;
+using System.Collections;
 
 /// <summary>
 /// Handles drawing functionality in VR using Oculus hands.
@@ -16,6 +18,12 @@ public class Draw : MonoBehaviour
     [SerializeField] OVRSkeleton righthandSkeleton; // Skeleton for the right hand.
     [SerializeField] OVRSkeleton lefthandSkeleton; // Skeleton for the left hand.
     [SerializeField] GameObject currrentSphereMarker; // Prefab for the sphere marker.
+    [SerializeField] Button retrievalButton;
+    [SerializeField] GameObject retrievalStatusPanel;
+    [SerializeField] TMPro.TMP_Text statusTextField;
+    [SerializeField] GameObject prefab;
+    [SerializeField] Transform objPlaceholder;
+
 
     [Header("Drawing Settings")]
     public bool isDrawingModeEnabled; // Indicates if drawing mode is active.
@@ -175,6 +183,13 @@ public class Draw : MonoBehaviour
         }
     }
 
+    public void RetrieveObj()
+    {
+        // spawn a new object here. Get it from prefabs for demo purposes.
+
+        StartCoroutine(Waiter());
+    }
+
     private void Start()
     {
         partialSketchPosList = new();
@@ -184,6 +199,7 @@ public class Draw : MonoBehaviour
         lineStartingPointExists = false;
         isDrawingModeEnabled = false;
         unsavedProgressExists = false;
+        retrievalButton.onClick.AddListener(RetrieveObj);
     }
 
     private void Update()
@@ -230,8 +246,15 @@ public class Draw : MonoBehaviour
         }
     }
 
-    //IEnumerator Waiter()
-    //{
-    //    yield return new WaitForSeconds(4);
-    //}
+    IEnumerator Waiter()
+    {
+        retrievalStatusPanel.SetActive(true);
+        statusTextField.text = "Retrieving the object...";
+        yield return new WaitForSeconds(3f);
+        //retrievalStatusPanel.SetActive(false);
+        Debug.Log("Here is your object from sketch.");
+        retrievalStatusPanel.SetActive(false);
+        var g = Instantiate(prefab, objPlaceholder);
+
+    }
 }
