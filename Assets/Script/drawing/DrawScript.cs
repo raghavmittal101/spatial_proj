@@ -23,7 +23,10 @@ public class Draw : MonoBehaviour
     [SerializeField] TMPro.TMP_Text statusTextField;
     [SerializeField] GameObject prefab;
     [SerializeField] Transform objPlaceholder;
-
+    [SerializeField] GameObject drawingGuides;
+    private Transform drawinGuidesBoundingCube;
+    bool isGizmoPlacementConfirmed;
+    bool sketchExistsInScene;
 
     [Header("Drawing Settings")]
     public bool isDrawingModeEnabled; // Indicates if drawing mode is active.
@@ -45,6 +48,17 @@ public class Draw : MonoBehaviour
     private List<Vector3> partialSketchPosList; // Stores positions for the current stroke.
     private List<GameObject> spawnedSketchObjects; // Stores all spawned objects for clearing or saving.
 
+    public void LockGizmoTransform()
+    {
+        isGizmoPlacementConfirmed = true;
+        var boxCollider = drawinGuidesBoundingCube.GetComponent<BoxCollider>(); // disable boxcollider to disable hand grabbing.
+        var rigidBody = drawinGuidesBoundingCube.GetComponent<Rigidbody>();
+        boxCollider.enabled = false;
+        rigidBody.isKinematic = false;
+        //var guides = drawingGuides.GetComponent<OVRGrabbable>();
+        //guides.enabled = false;
+    }
+
     /// <summary>
     /// Toggles the drawing mode on or off.
     /// </summary>
@@ -52,6 +66,20 @@ public class Draw : MonoBehaviour
     public void ToggleDrawingMode(bool isDrawingModeEnabled)
     {
         this.isDrawingModeEnabled = isDrawingModeEnabled;
+        //var guides = drawingGuides.GetComponent<OVRGrabbable>();
+        //guides.enabled = true;
+        drawingGuides.SetActive(isDrawingModeEnabled);
+        
+        if (!sketchExistsInScene)
+        {
+            var boxCollider = drawinGuidesBoundingCube.GetComponent<BoxCollider>(); // disable boxcollider to disable hand grabbing.
+            var rigidBody = drawinGuidesBoundingCube.GetComponent<Rigidbody>();
+            boxCollider.enabled = true;
+            rigidBody.isKinematic = true;
+            drawinGuidesBoundingCube.Find("Gizmos").gameObject.SetActive(false);
+            drawinGuidesBoundingCube.Find("InitialGizmo").gameObject.SetActive(true);
+            isGizmoPlacementConfirmed = false;
+        }
 
     }
 
@@ -86,12 +114,13 @@ public class Draw : MonoBehaviour
             lastPos = markerPosition;
             partialSketchPosList.Add(lastPos);
             lineStartingPointExists = true;
+            sketchExistsInScene = true;
         }
         else
         {
             if (lastPos != markerPosition)
             {
-
+                
                 currentLineRenderer.positionCount++;
                 int positionIndex = currentLineRenderer.positionCount - 1;
                 currentLineRenderer.SetPosition(positionIndex, markerPosition);
@@ -152,6 +181,23 @@ public class Draw : MonoBehaviour
         spawnedSketchObjects.Clear();
         partialSketchPosList.Clear();
         completeSketchPosList.Clear();
+        sketchExistsInScene = false;
+    }
+
+    private void UpdateSketchOrientation()
+    {
+        var bboxPosition = drawinGuidesBoundingCube.transform.position;
+        if (completeSketchPosList.Count > 0)
+        {
+            for (int i= 0; i < completeSketchPosList.Count; i++)
+            {
+                for (int j=0; j< completeSketchPosList[i].Count; j++)
+                {
+                    spawnedSketchObjects[i].transform.Rotate(Vector3.up, -drawinGuidesBoundingCube.transform.rotation.y);
+                    //completeSketchPosList[i][j] = pos;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -160,9 +206,11 @@ public class Draw : MonoBehaviour
     public void SaveSketch()
     {
         System.DateTime currentDateTime = System.DateTime.Now;
-        string filename = currentDateTime.ToString("dd-MM-YYYY_HH-mm-ss");
+        string filename = currentDateTime.ToString("yyyy'-'MM'-'dd'T'HH'_'mm'_'ss");
         string filePath = Path.Combine(Application.persistentDataPath, $"my_data_{filename}.csv");
         Debug.Log($"----------Saving sketch.........  : {completeSketchPosList.Count}");
+
+        UpdateSketchOrientation();
         using (StreamWriter writer = new StreamWriter(filePath, true))
         {
             writer.WriteLine("sketch_id,x,y,z");
@@ -181,13 +229,15 @@ public class Draw : MonoBehaviour
                 }
             }
         }
+        string outputFilePath = Path.Combine(Application.persistentDataPath, $"my_data_{filename}.obj");
+        CSVtoOBJConverter.Convert(filePath, outputFilePath);
     }
 
     public void RetrieveObj()
     {
         // spawn a new object here. Get it from prefabs for demo purposes.
 
-        StartCoroutine(Waiter());
+        SaveAndClearSketch();
     }
 
     private void Start()
@@ -200,12 +250,13 @@ public class Draw : MonoBehaviour
         isDrawingModeEnabled = false;
         unsavedProgressExists = false;
         retrievalButton.onClick.AddListener(RetrieveObj);
+        drawinGuidesBoundingCube = drawingGuides.transform.GetChild(0);
     }
 
     private void Update()
     {
 
-        if (isDrawingModeEnabled && lefthand.GetFingerIsPinching(OVRHand.HandFinger.Index))
+        if (isDrawingModeEnabled && lefthand.GetFingerIsPinching(OVRHand.HandFinger.Index) && isGizmoPlacementConfirmed)
         {
             foreach (var b in righthandSkeleton.Bones)
             {
