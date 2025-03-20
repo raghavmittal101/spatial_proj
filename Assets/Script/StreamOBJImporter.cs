@@ -454,6 +454,10 @@ public class StreamOBJImporter : MonoBehaviour
         }
     }
 
+    public void EnableARMode()
+    {
+        _OnValueChanged(true);
+    }
     private void _OnValueChanged(bool enabled)
     {
         if (enabled)

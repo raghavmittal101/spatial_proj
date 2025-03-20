@@ -17,6 +17,11 @@ public class FullScaleModeSwitcher : MonoBehaviour
         toggleButton.onValueChanged.AddListener(_OnValueChanged);
     }
 
+    public void EnableFullScaleMode()
+    {
+        _OnValueChanged(true);
+    }
+
     private void _OnValueChanged(bool enabled)
     {
         var boxCollider = boundingBox.GetComponent<BoxCollider>(); // disable boxcollider to disable hand grabbing.
