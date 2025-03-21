@@ -176,15 +176,26 @@ public class TrajectoryPlanner : MonoBehaviour
         // incomplete method -- for adding and removing a green colored highlight material.
         var objMesh = target.transform.Find("default");
         var mr = objMesh.GetComponent<MeshRenderer>();
+        var mrs = new List<Material>(mr.materials);
+        
         if (IsTargetValidForPick(target))
         {
-            mr.materials.Append(highlightMaterial);
+            mrs.Add(highlightMaterial);
+        }
+        else
+        {
+            mrs.Remove(highlightMaterial);
         }
     }
 
     public void AddTargetToQueue(GameObject target, Vector3 target_placement_pos)
     {
         targetsQueue.Enqueue(new KeyValuePair<GameObject, Vector3>(target, target_placement_pos));
+    }
+
+    public void AddTargetToQueue(GameObject target)
+    {
+        AddTargetToQueue(target, FruitPlacement.transform.position);
     }
 
     void SpawnTarget(Vector3 target_placement_pos)

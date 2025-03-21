@@ -30,6 +30,9 @@ public class StreamOBJImporter : MonoBehaviour
     [SerializeField] private GameObject envBoundingCube;
     [SerializeField] private MainScript mainScript;
     [SerializeField] private ImageFetcher imageFetcher;
+    
+    [SerializeField] private bool GenerateForRobo;
+    [SerializeField] private TrajectoryPlanner trajectoryPlanner;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -113,6 +116,17 @@ public class StreamOBJImporter : MonoBehaviour
                     1.5f,
                     1.5f,
                     1.5f);
+                if (GenerateForRobo)
+                {
+                    GameObject boundingcube = grabbableObj.transform.Find("BoundingCube").gameObject;
+                    
+                    if (boundingcube != null)
+                    {
+                        var addToPubQueue = boundingcube.GetComponent<AddToPublishQueue>();
+                        addToPubQueue.trajectoryPlanner = trajectoryPlanner;
+                    }
+                }
+                
                 Transform grabbableObjBoundingCubeTransform = grabbableObj.transform.GetChild(0).transform;
                 Bounds boundsOfLoadedObj = _GetChildRendererBounds(loadedObj);
                 //grabbableObjBoundingCubeTransform.transform.localScale = (boundsOfLoadedObj.size);
