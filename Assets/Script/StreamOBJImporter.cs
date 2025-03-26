@@ -30,9 +30,16 @@ public class StreamOBJImporter : MonoBehaviour
     [SerializeField] private GameObject envBoundingCube;
     [SerializeField] private MainScript mainScript;
     [SerializeField] private ImageFetcher imageFetcher;
-    
-    [SerializeField] private bool GenerateForRobo;
+
+    [Header("For robot integration")]
+    public bool GenerateForRobo;
+    public bool isAPlatform { get; set; }
+    public bool placeOutOfRoboRange { get; set; }
     [SerializeField] private TrajectoryPlanner trajectoryPlanner;
+    [SerializeField] private GameObject grabbableObjContainerPrefabForRobot;
+    [SerializeField] private GameObject outOfRangeObjectPlaceholder_roboscene;
+    [SerializeField] private GameObject loadedObjectPlaceholder_roboscene;
+    [SerializeField] private GameObject platformObjectPlacehodler_roboscene;
 
     private string objFileFetchURL;
     private string objZipFetchURL;
@@ -107,16 +114,72 @@ public class StreamOBJImporter : MonoBehaviour
                 Debug.Log(objfilePath);
                 statusTextVariable.text = "Processing the object for rendering...";
                 var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
-                var grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
-                grabbableObj.transform.position = new Vector3(
-                    objPrefabPlaceholder.transform.position.x,
-                    objPrefabPlaceholder.transform.position.y + 0.05f,
-                    objPrefabPlaceholder.transform.position.z);
-                grabbableObj.transform.localScale = new Vector3(
-                    1.5f,
-                    1.5f,
-                    1.5f);
+                GameObject grabbableObj;
                 if (GenerateForRobo)
+                {
+                    if (isAPlatform)
+                    {
+                        // generate platform. everything else is ignored
+                        grabbableObj = Instantiate(grabbableObjContainerPrefab);
+                        objPrefabPlaceholder = platformObjectPlacehodler_roboscene;
+                    }
+                    else
+                    {
+                        if (placeOutOfRoboRange)
+                        {
+                            // it is not a platform and use wants to place the object out of range.
+                            grabbableObj = Instantiate(grabbableObjContainerPrefabForRobot);
+                            objPrefabPlaceholder = outOfRangeObjectPlaceholder_roboscene;
+
+                        }
+                        else
+                        {
+                            // it is not a platform, and the user wants to place objects within the range.
+                            grabbableObj = Instantiate(grabbableObjContainerPrefabForRobot);
+                            objPrefabPlaceholder = loadedObjectPlaceholder_roboscene;
+                        }
+                    }
+                    grabbableObj.transform.position = new Vector3(
+                        objPrefabPlaceholder.transform.position.x,
+                        objPrefabPlaceholder.transform.position.y + 0.05f,
+                        objPrefabPlaceholder.transform.position.z);
+                    grabbableObj.transform.localScale = new Vector3(
+                        1f,
+                        1f,
+                        1f);
+                }
+                else
+                {
+                    grabbableObj = Instantiate(grabbableObjContainerPrefab);
+                    grabbableObj.transform.position = new Vector3(
+                        objPrefabPlaceholder.transform.position.x,
+                        objPrefabPlaceholder.transform.position.y + 0.05f,
+                        objPrefabPlaceholder.transform.position.z);
+                    grabbableObj.transform.localScale = new Vector3(
+                        1.5f,
+                        1.5f,
+                        1.5f);
+                }
+
+                //    if(!isAPlatform)
+                        
+                //    else if (placeOutOfRoboRange)
+                //    {
+                //        grabbableObj = Instantiate(grabbableObjContainerPrefabForRobot);
+                //        objPrefabPlaceholder = outOfRangeObjectPlaceholder_roboscene;
+
+                //    }
+                        
+                //    else
+                //        grabbableObj = Instantiate(grabbableObjContainerPrefab);
+                //}
+                //else
+                //{
+                //    grabbableObj = Instantiate(grabbableObjContainerPrefab, objPrefabPlaceholder.transform);
+                //}
+
+                
+                if (GenerateForRobo && !isAPlatform)
                 {
                     GameObject boundingcube = grabbableObj.transform.Find("BoundingCube").gameObject;
                     

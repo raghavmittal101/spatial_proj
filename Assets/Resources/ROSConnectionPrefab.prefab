@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RosIPAddress: 0.tcp.in.ngrok.io
-  m_RosPort: 17595
+  m_RosPort: 12533
   m_ConnectOnStart: 1
   m_KeepaliveTime: 1
   m_NetworkTimeoutSeconds: 2

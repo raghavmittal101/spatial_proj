@@ -349,7 +349,8 @@ public class TrajectoryPlanner : MonoBehaviour
         }
         else
         {
-            trajectoryGenerationStatus.Invoke("Motion not possible for the current position of the object ...");
+            trajectoryGenerationStatus.Invoke("Motion not possible with current position of object ... \n Skipping the object...");
+            targetsQueue.Dequeue();
             Debug.LogError("No trajectory returned from MoverService.");
             IsTrajectoryMotionPending = false;
         }
