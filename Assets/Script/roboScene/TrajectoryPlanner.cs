@@ -12,11 +12,6 @@ using UnityEngine.UI;
 
 public class TrajectoryPlanner : MonoBehaviour
 {
-    enum TargetType
-    {
-        Fruit,
-        Veggie
-    };
 
     // Hardcoded variables
     const int k_NumRobotJoints = 6;
@@ -74,6 +69,7 @@ public class TrajectoryPlanner : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Debug.Log("Trajectory planner is running...");
         IsTrajectoryMotionPending = false;
         targetsQueue = new();
         // Get ROS connection static instance
@@ -188,8 +184,25 @@ public class TrajectoryPlanner : MonoBehaviour
         }
     }
 
+    public void AddTargetToQueue(GameObject target, TargetType.Type t)
+    {
+        Debug.Log("Add target type: " + "helloooo");
+        switch (t)
+        {
+            case TargetType.Type.Fruit:
+                Debug.Log("Add target type: " + "fruit");
+                AddTargetToQueue(target, FruitPlacement.transform.position);
+                break;
+            case TargetType.Type.Veg:
+                Debug.Log("Add target type: " + "veg");
+                AddTargetToQueue(target, VeggiePlacement.transform.position);
+                break;
+        }
+    }
+
     public void AddTargetToQueue(GameObject target, Vector3 target_placement_pos)
     {
+        Debug.Log("Adding target to queue ...");
         targetsQueue.Enqueue(new KeyValuePair<GameObject, Vector3>(target, target_placement_pos));
     }
 
@@ -216,7 +229,8 @@ public class TrajectoryPlanner : MonoBehaviour
 
     public void PublishJointsForFirstTargetInQueue()
     {
-        if(targetsQueue.Count > 0 && !IsTrajectoryMotionPending)
+        Debug.Log("targetsQueue.Count: " + targetsQueue.Count);
+        if (targetsQueue.Count > 0 && !IsTrajectoryMotionPending)
         {
             var el = targetsQueue.Peek();
             PublishJoints(el.Key, el.Value);

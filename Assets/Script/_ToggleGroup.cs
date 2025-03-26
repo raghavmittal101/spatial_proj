@@ -5,15 +5,16 @@ public class _ToggleGroup : MonoBehaviour
 {
     private _ToggleMaker[] toggles;
     [SerializeField] bool allowTurnOff;
+    public _ToggleMaker currentActiveToggle { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentActiveToggle = null;
         toggles = transform.GetComponentsInChildren<_ToggleMaker>();
         foreach(var toggle in toggles)
         {
             toggle.onSelect.AddListener(UnselectOtherOptions);
             toggle.allowTurnOff = allowTurnOff;
-            Debug.Log(toggle.transform.name);
         }
     }
     public void UnselectOtherOptions(Transform toggleTransform)
@@ -28,5 +29,6 @@ public class _ToggleGroup : MonoBehaviour
                 i.UnSelect();
             }
         }
+        currentActiveToggle = toggleTransform.GetComponent<_ToggleMaker>();
     }
 }
