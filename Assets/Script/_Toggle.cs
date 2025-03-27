@@ -18,6 +18,8 @@ public class _ToggleMaker : MonoBehaviour
     void Start()
     {
         button = transform.GetComponent<Button>();
+        if (button == null)
+            button = transform.GetComponentInChildren<Button>();
         button.onClick.AddListener(Toggle);
         text = button.GetComponentInChildren<TMPro.TMP_Text>();
         image = button.GetComponent<Image>();

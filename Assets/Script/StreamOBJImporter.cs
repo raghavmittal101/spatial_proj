@@ -33,8 +33,8 @@ public class StreamOBJImporter : MonoBehaviour
 
     [Header("For robot integration")]
     public bool GenerateForRobo;
-    public bool isAPlatform { get; set; }
-    public bool placeOutOfRoboRange { get; set; }
+    public bool IsAPlatform { get; set; }
+    public bool PlaceOutOfRoboRange { get; set; }
     [SerializeField] private TrajectoryPlanner trajectoryPlanner;
     [SerializeField] private GameObject grabbableObjContainerPrefabForRobot;
     [SerializeField] private GameObject outOfRangeObjectPlaceholder_roboscene;
@@ -117,24 +117,27 @@ public class StreamOBJImporter : MonoBehaviour
                 GameObject grabbableObj;
                 if (GenerateForRobo)
                 {
-                    if (isAPlatform)
+                    if (IsAPlatform)
                     {
-                        // generate platform. everything else is ignored
+                        // generate for platform. everything else is ignored
+                        Debug.Log("generate for platform. everything else is ignored");
                         grabbableObj = Instantiate(grabbableObjContainerPrefab);
                         objPrefabPlaceholder = platformObjectPlacehodler_roboscene;
                     }
                     else
                     {
-                        if (placeOutOfRoboRange)
+                        if (PlaceOutOfRoboRange)
                         {
                             // it is not a platform and use wants to place the object out of range.
+                            Debug.Log("it is not a platform and use wants to place the object out of range.");
                             grabbableObj = Instantiate(grabbableObjContainerPrefabForRobot);
                             objPrefabPlaceholder = outOfRangeObjectPlaceholder_roboscene;
 
                         }
                         else
                         {
-                            // it is not a platform, and the user wants to place objects within the range.
+                            // it is not for a platform, and the user wants to place objects within the range.
+                            Debug.Log("it is not a platform, and the user wants to place objects within the range.");
                             grabbableObj = Instantiate(grabbableObjContainerPrefabForRobot);
                             objPrefabPlaceholder = loadedObjectPlaceholder_roboscene;
                         }
@@ -179,7 +182,7 @@ public class StreamOBJImporter : MonoBehaviour
                 //}
 
                 
-                if (GenerateForRobo && !isAPlatform)
+                if (GenerateForRobo && !IsAPlatform)
                 {
                     GameObject boundingcube = grabbableObj.transform.Find("BoundingCube").gameObject;
                     
