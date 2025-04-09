@@ -24,13 +24,13 @@ public class AddToPublishQueue : MonoBehaviour
 
             switch (selectedCat)
             {
-                case "fruit":
-                    Debug.Log("Add target type: " + "fruit");
-                    trajectoryPlanner.AddTargetToQueue(transform.gameObject, TargetType.Type.Fruit);
+                case "CatA":
+                    Debug.Log("Add target type: " + "CatA");
+                    trajectoryPlanner.AddTargetToQueue(transform.gameObject, TargetType.Type.CatA);
                     break;
-                case "veg":
-                    Debug.Log("Add target type: " + "veg");
-                    trajectoryPlanner.AddTargetToQueue(transform.gameObject, TargetType.Type.Veg);
+                case "CatB":
+                    Debug.Log("Add target type: " + "CatB");
+                    trajectoryPlanner.AddTargetToQueue(transform.gameObject, TargetType.Type.CatB);
                     break;
                 case "platform":
                     SpawnPlatform();

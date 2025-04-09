@@ -33,11 +33,11 @@ public class TrajectoryPlanner : MonoBehaviour
     GameObject m_TargetPlacementDefault;
     public GameObject TargetPlacement { get => m_TargetPlacementDefault; set => m_TargetPlacementDefault = value; }
     [SerializeField]
-    GameObject m_FruitPlacement; 
-    public GameObject FruitPlacement { get => m_FruitPlacement; set => m_FruitPlacement = value; }
+    GameObject m_CatAPlacement; 
+    public GameObject CatAPlacement { get => m_CatAPlacement; set => m_CatAPlacement = value; }
     [SerializeField]
-    GameObject m_VeggiePlacement;
-    public GameObject VeggiePlacement { get => m_VeggiePlacement; set => m_VeggiePlacement = value; }
+    GameObject m_CatBPlacement;
+    public GameObject CatBPlacement { get => m_CatBPlacement; set => m_CatBPlacement = value; }
     [SerializeField]
     Queue<KeyValuePair<GameObject, Vector3>> targetsQueue; // keyvalue pair of target object and its placement position.
     [SerializeField]
@@ -189,13 +189,13 @@ public class TrajectoryPlanner : MonoBehaviour
         Debug.Log("Add target type: " + "helloooo");
         switch (t)
         {
-            case TargetType.Type.Fruit:
-                Debug.Log("Add target type: " + "fruit");
-                AddTargetToQueue(target, FruitPlacement.transform.position);
+            case TargetType.Type.CatA:
+                Debug.Log("Add target type: " + "CatA");
+                AddTargetToQueue(target, CatAPlacement.transform.position);
                 break;
-            case TargetType.Type.Veg:
-                Debug.Log("Add target type: " + "veg");
-                AddTargetToQueue(target, VeggiePlacement.transform.position);
+            case TargetType.Type.CatB:
+                Debug.Log("Add target type: " + "CatB");
+                AddTargetToQueue(target, CatBPlacement.transform.position);
                 break;
         }
     }
@@ -208,7 +208,7 @@ public class TrajectoryPlanner : MonoBehaviour
 
     public void AddTargetToQueue(GameObject target)
     {
-        AddTargetToQueue(target, FruitPlacement.transform.position);
+        AddTargetToQueue(target, CatAPlacement.transform.position);
     }
 
     void SpawnTarget(Vector3 target_placement_pos)
@@ -219,12 +219,12 @@ public class TrajectoryPlanner : MonoBehaviour
 
     public void SpawnFruit()
     {
-        SpawnTarget(FruitPlacement.transform.position);
+        SpawnTarget(CatAPlacement.transform.position);
     }
 
     public void SpawnVeggie()
     {
-        SpawnTarget(VeggiePlacement.transform.position);
+        SpawnTarget(CatBPlacement.transform.position);
     }
 
     public void PublishJointsForFirstTargetInQueue()
@@ -349,7 +349,7 @@ public class TrajectoryPlanner : MonoBehaviour
         }
         else
         {
-            trajectoryGenerationStatus.Invoke("Motion not possible with current position of object ... \n Skipping the object...");
+            trajectoryGenerationStatus.Invoke("Motion not possible with current position of object ... \n Pick & place the object by hand ...");
             targetsQueue.Dequeue();
             Debug.LogError("No trajectory returned from MoverService.");
             IsTrajectoryMotionPending = false;
@@ -409,6 +409,8 @@ public class TrajectoryPlanner : MonoBehaviour
             OpenGripper();
             IsTrajectoryMotionPending = false;
             trajectoryGenerationStatus.Invoke("Trajectories execution successful ...");
+            
+            PublishJointsForFirstTargetInQueue();
         }
 
         else

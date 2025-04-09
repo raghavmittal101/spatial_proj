@@ -66,7 +66,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -4.6049995, y: -12}
+  m_AnchoredPosition: {x: -4.6049995, y: -10}
   m_SizeDelta: {x: 14.570001, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &871765323741217318
@@ -97,9 +97,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Fruit/
-
-    Vegetable'
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -184,7 +182,7 @@ GameObject:
   - component: {fileID: 1925685851008342255}
   - component: {fileID: 1487864491950447549}
   m_Layer: 0
-  m_Name: fruit
+  m_Name: CatA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1110,9 +1108,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Packed
-
-    Food'
+  m_text: B
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1197,7 +1193,7 @@ GameObject:
   - component: {fileID: 4358316380627502517}
   - component: {fileID: 6236416273967343395}
   m_Layer: 0
-  m_Name: veg
+  m_Name: CatB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
