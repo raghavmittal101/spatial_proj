@@ -409,8 +409,6 @@ public class TrajectoryPlanner : MonoBehaviour
             OpenGripper();
             IsTrajectoryMotionPending = false;
             trajectoryGenerationStatus.Invoke("Trajectories execution successful ...");
-            
-            PublishJointsForFirstTargetInQueue();
         }
 
         else

@@ -14,9 +14,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: f46dc3194b4704c8d98e0b0c419905a2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainSceneWithRobot.unity
     guid: be23a8fd55a3b4f6b90367306d6cd0c7
+  - enabled: 1
+    path: Assets/Scenes/MainSceneAISceneComp_noPreScenes.unity
+    guid: f7f3803c7f6fd418db27ba10f3d0252c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5cf0c68d4d3fd8f1bba310893e328435, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}

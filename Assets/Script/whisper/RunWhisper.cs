@@ -25,12 +25,12 @@ public class RunWhisper : MonoBehaviour
     const int maxSamples = 30 * 16000;
 
     public string serverUrl; // URL of the Python server
-    private string endpoint = "transcribe";
+    //private string endpoint = "transcribe";
 
-    private void Start()
-    {
-        serverUrl = serverUrl + endpoint;
-    }
+    //private void Start()
+    //{
+    //    serverUrl = serverUrl + endpoint;
+    //}
     public void Transcribe()
     {
         try
