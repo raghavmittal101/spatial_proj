@@ -340,7 +340,7 @@ public class TrajectoryPlanner : MonoBehaviour
 
     void TrajectoryResponse(MoverServiceResponse response)
     {
-        trajectoryGenerationStatus.Invoke("Motion planning ongoing ...");
+        StartCoroutine(ChangeStatusForSeconds("Motion planning ongoing ...", 2f));
         if (response.trajectories.Length > 0)
         {
             Debug.Log("Trajectory returned.");
@@ -349,7 +349,7 @@ public class TrajectoryPlanner : MonoBehaviour
         }
         else
         {
-            trajectoryGenerationStatus.Invoke("Motion not possible with current position of object ... \n Pick & place the object by hand ...");
+            StartCoroutine(ChangeStatusForSeconds("Motion not possible with current position of object ... \n Pick & place the object by hand ...", 3f));
             targetsQueue.Dequeue();
             Debug.LogError("No trajectory returned from MoverService.");
             IsTrajectoryMotionPending = false;
@@ -408,13 +408,21 @@ public class TrajectoryPlanner : MonoBehaviour
             // All trajectories have been executed, open the gripper to place the target cube
             OpenGripper();
             IsTrajectoryMotionPending = false;
-            trajectoryGenerationStatus.Invoke("Trajectories execution successful ...");
+            StartCoroutine(ChangeStatusForSeconds("Trajectories execution successful ...", 2f));
+            PublishJointsForFirstTargetInQueue();
         }
 
         else
         {
             IsTrajectoryMotionPending = false;
         }
+    }
+
+    private IEnumerator ChangeStatusForSeconds(string s, float t)
+    {
+        trajectoryGenerationStatus.Invoke(s);
+        yield return new WaitForSeconds(t);
+        trajectoryGenerationStatus.Invoke("");
     }
 
     enum Poses

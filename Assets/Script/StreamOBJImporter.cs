@@ -46,7 +46,7 @@ public class StreamOBJImporter : MonoBehaviour
     private string texURL;
     private string mtlURL;
     private string objURL;
-    private string zipPath;
+    private string zipDownloadURL;
     private string downloadedMeshDirPath;
     private string text23DGenURL;
     private string image23DGenURL;
@@ -65,6 +65,13 @@ public class StreamOBJImporter : MonoBehaviour
 
     void Start()
     {
+#if UNITY_EDITOR
+        text23DHostURL = "file://" + Application.streamingAssetsPath + "/";
+        predefinedObjHostURL = "file://" + Application.streamingAssetsPath + "/";
+#else
+        text23DHostURL = Application.streamingAssetsPath + "/";
+        predefinedObjHostURL = Application.streamingAssetsPath + "/";
+#endif
         objFileFetchURL = predefinedObjHostURL + apiVersion + "/download-asset/"; // Replace with your API endpoint
         objZipFetchURL = predefinedObjHostURL + apiVersion + "/download-asset-compressed/";
         image23DGenURL = text23DHostURL + apiVersion + "/img-2-3d/";
@@ -108,9 +115,11 @@ public class StreamOBJImporter : MonoBehaviour
         {
             if (inputMode != InputMode.textToImage)
             {
-                downloadedMeshDirPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name);
-                string objfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".obj";
-                string mtlfilePath = downloadedMeshDirPath + "/" + zipURL.asset_name + ".mtl";
+                Debug.Log(objName);
+                downloadedMeshDirPath = Path.Combine(Application.persistentDataPath, objName);
+                Debug.Log("downloadmeshdirpath = " + downloadedMeshDirPath);
+                string objfilePath = downloadedMeshDirPath + "/" + objName + ".obj";
+                string mtlfilePath = downloadedMeshDirPath + "/" + objName + ".mtl";
                 Debug.Log(objfilePath);
                 statusTextVariable.text = "Processing the object for rendering...";
                 var loadedObj = new OBJLoader().Load(objfilePath, mtlfilePath);
@@ -302,7 +311,7 @@ public class StreamOBJImporter : MonoBehaviour
         {
             form.AddField("asset_name", objName);
             zipURL.asset_name = objName;
-            zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
+            zipDownloadPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
             statusTextVariable.text = "Fetching the object...";
         }
         else if (inputMode == InputMode.prompt)
@@ -329,11 +338,9 @@ public class StreamOBJImporter : MonoBehaviour
         {
             Debug.Log("reached to 291 line");
             form.AddField("prompt", objName);
-            objectFetchURL = text2ImageGenURL;
-            hostURL = text23DHostURL;
             statusTextVariable.text = "Generating the object image. This may take some time...";
 
-            yield return FetchImage(objectFetchURL, form, objName);
+            yield return FetchImage(objName);
         }
 
 
@@ -344,7 +351,7 @@ public class StreamOBJImporter : MonoBehaviour
                 // extract file
                 string extractPath = Application.persistentDataPath;
                 statusTextVariable.text = "Extracting the compressed object...";
-                ZipFile.ExtractToDirectory(zipPath, extractPath);
+                ZipFile.ExtractToDirectory(zipDownloadPath, extractPath);
             }
         }
         catch
@@ -353,7 +360,7 @@ public class StreamOBJImporter : MonoBehaviour
             {
                 Debug.LogError("failed to extract downloaded zip file.");
                 PrintErrorToScreen("failed to extract downloaded object zip file.");
-                File.Delete(zipPath);
+                File.Delete(zipDownloadPath);
                 ResetSceneOnFail();
                 yield break;
             }
@@ -363,90 +370,63 @@ public class StreamOBJImporter : MonoBehaviour
     }
 
 
-    IEnumerator FetchImage(string imageFetchURL, WWWForm form, string objName)
+    IEnumerator FetchImage(string prompt)
     {
-        using (var w = UnityWebRequest.Post(imageFetchURL, form))
-        {
-            Debug.Log("reached to 322 line");
-            Debug.Log("imageFetchURL: " + imageFetchURL);
-            yield return w.SendWebRequest();
-            if (w.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(w.error);
-                PrintErrorToScreen("Something went wrong while trying to get image file URL.");
-                ResetSceneOnFail();
-                yield break;
-            }
-            else
-            {
-                Debug.Log("finished");
-                text2ImageResponseBody = JsonUtility.FromJson<Text2ImageResponseBody>(w.downloadHandler.text);
-                Debug.Log("text2ImageResponseBody.image_file: " + text2ImageResponseBody.img_file);
-
-                StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text23DHostURL + text2ImageResponseBody.img_file, text2ImageResponseBody.asset_name, objName));
-
-            }
-        }
-
+        Debug.Log(prompt);
+        WaitForSeconds waitForSeconds = new(Random.Range(1f, 2f));
+        yield return waitForSeconds;
+        var asset_name = PromptObjPairs.FindObjByPrompt(prompt);
+        StartCoroutine(imageFetcher.DownloadImageAndSetTheButton(text2ImageGenURL + asset_name + ".png", asset_name, prompt));
     }
 
+
+
+    string zipDownloadPath;
     IEnumerator Fetcher(string hostURL, string objectFetchURL, WWWForm form)
     {
-        using (var w = UnityWebRequest.Post(objectFetchURL, form))
+        zipDownloadPath = Path.Combine(Application.persistentDataPath, objectName + "zip") ;
+        zipDownloadURL = Path.Combine(image23DGenURL, objectName + ".zip");
+        statusTextVariable.text = "Generating the object. This may take some time...";
+        WaitForSeconds waitForSeconds = new(Random.Range(1f, 2f));
+        yield return waitForSeconds;
+        Debug.Log(zipDownloadURL);
+        using (UnityWebRequest www = UnityWebRequest.Get(zipDownloadURL))
         {
-            Debug.Log(objectFetchURL);
-            yield return w.SendWebRequest();
-            if (w.result != UnityWebRequest.Result.Success)
+
+            yield return www.SendWebRequest();
+            Debug.Log(zipDownloadURL);
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log(w.error);
-                PrintErrorToScreen("Something went wrong while trying to get the object zipfile URL.");
+                Debug.LogError(www.error);
+                PrintErrorToScreen("Something went wrong while trying to download object zip file.");
                 ResetSceneOnFail();
-                yield break;
+                yield return null;
             }
             else
             {
-                Debug.Log("finished");
-                zipURL = JsonUtility.FromJson<ZipURL>(w.downloadHandler.text);
-
-                // now download the file
-                zipPath = Path.Combine(Application.persistentDataPath, zipURL.asset_name + ".zip");
-                statusTextVariable.text = "Downloading the generated object...";
-                using (UnityWebRequest www = UnityWebRequest.Get(hostURL + zipURL.zip_file))
+                byte[] result = www.downloadHandler.data;
+                Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
+                using (FileStream SourceStream = File.Open(zipDownloadPath, FileMode.OpenOrCreate))
                 {
-
-                    yield return www.SendWebRequest();
-                    if (www.result != UnityWebRequest.Result.Success)
+                    if (!SourceStream.CanWrite)
                     {
-                        Debug.LogError(www.error);
-                        PrintErrorToScreen("Something went wrong while trying to download object zip file.");
+                        Debug.LogError("Unable to write to the downloads directory");
+                        PrintErrorToScreen("Unable to write to the downloads directory");
                         ResetSceneOnFail();
-                        yield return null;
+                        yield break;
                     }
                     else
                     {
-                        byte[] result = www.downloadHandler.data;
-                        Debug.Log("Download size:" + result.Length / (1024 * 1024) + " MB");
-                        using (FileStream SourceStream = File.Open(zipPath, FileMode.OpenOrCreate))
-                        {
-                            if (!SourceStream.CanWrite)
-                            {
-                                Debug.LogError("Unable to write to the downloads directory");
-                                PrintErrorToScreen("Unable to write to the downloads directory");
-                                ResetSceneOnFail();
-                                yield break;
-                            }
-                            else
-                            {
-                                SourceStream.Seek(0, SeekOrigin.End);
-                                Task task = SourceStream.WriteAsync(result, 0, result.Length);
-                                yield return new WaitUntil(() => task.IsCompleted);
-                            }
-                        }
+                        SourceStream.Seek(0, SeekOrigin.End);
+                        Task task = SourceStream.WriteAsync(result, 0, result.Length);
+                        yield return new WaitUntil(() => task.IsCompleted);
                     }
-
                 }
             }
+
         }
+            
+        
     }
 
     private void OnApplicationQuit()
@@ -454,7 +434,7 @@ public class StreamOBJImporter : MonoBehaviour
         try
         {
             Directory.Delete(downloadedMeshDirPath, true);
-            File.Delete(zipPath);
+            File.Delete(zipDownloadPath);
         }
         catch { }
 

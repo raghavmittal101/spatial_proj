@@ -37,6 +37,7 @@ public class ImageFetcher : MonoBehaviour
     }
     public IEnumerator DownloadImageAndSetTheButton(string url, string assetname, string prompt)
     {
+        Debug.Log(url);
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
             yield return request.SendWebRequest();

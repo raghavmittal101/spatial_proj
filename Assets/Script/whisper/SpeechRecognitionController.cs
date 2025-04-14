@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 public class SpeechRecognitionController : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class SpeechRecognitionController : MonoBehaviour
     public RunWhisper runWhisper;
     public RunWhisper runWhisperForUnity; // This is the reference to the RunWhisper script
     public RunWhisper runWhisperForOculus; // This is the reference to the RunWhisper script
+    public List<string> prompts;
+    public int currentPromptIndex = 0;
     private string m_deviceName;
     private AudioClip m_clip;
     private byte[] m_bytes;
@@ -38,6 +42,24 @@ public class SpeechRecognitionController : MonoBehaviour
 #else
         runWhisper = runWhisperForOculus;
 #endif
+    }
+
+  
+
+    string GetPromptAtIndex(int index)
+    {
+        if (index < 0 || index >= promptObjPairs.Count)
+            throw new System.IndexOutOfRangeException("Index is out of range.");
+
+        return promptObjPairs.ElementAt(index).Key;
+    }
+
+    Dictionary<string, PromptObjs> promptObjPairs;
+
+    private void Start()
+    {
+        promptObjPairs = PromptObjPairs.promptObjPairs;
+
     }
 
     /// <summary>
@@ -103,6 +125,7 @@ public class SpeechRecognitionController : MonoBehaviour
     {
         onSendRecording.Invoke();
         runWhisper.audioClip = m_clip;
+        runWhisper.prompt = GetPromptAtIndex(currentPromptIndex++);
         try
         {
             runWhisper.Transcribe();

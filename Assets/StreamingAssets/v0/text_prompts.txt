@@ -1,0 +1,48 @@
+a small plastic box used for storing factory screws and tiny fasteners
+a handheld toolbox with a top handle and multiple compartments inside
+a paper label storage box commonly used for organizing printed factory labels
+
+a set of adjustable metal wrench used for tightening bolts and nuts
+set of hex keys in plastic holder
+a retractable measuring tape with a rectangular plastic housing
+
+a phone charger with EU pin type and attached cable which is coiled
+a small charging case for wireless earbuds
+a compact travel camera with a zoom lens
+
+a rectangular fresh milk carton with a plastic screw cap
+a solid rectangular block of cheese
+a small white plastic cup of yogurt with a foil lid
+
+a leather wallet used to store money and cards
+isometric view of a CLOSED soft cover book
+a firm zippered case designed to protect sunglasses during air travel
+
+a colorful box of breakfast cereal
+a clear plastic packet of raw spaghetti
+a plastic jar with lid, filled with creamy peanut butter
+
+suffix=" on plain contrastive background."
+
+fs1 
+an EMPTY flat metal work table, isometric view on white background
+
+fs2
+an EMPTY heavy-duty rugged workbench on white background 
+
+as1
+a flat rectangular security checkpoint table used at airport screening areas on white background
+
+as2
+a simple empty metal table used for inspecting personal travel items at airports, on a white background
+
+gs1
+an empty flat wooden table, on a white background
+
+gs2
+an empty metal retail exhibition table, on a white background
+
+
+
+as1_397206298_good
+fs1_847709493_good

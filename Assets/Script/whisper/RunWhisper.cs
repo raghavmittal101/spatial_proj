@@ -25,6 +25,8 @@ public class RunWhisper : MonoBehaviour
     const int maxSamples = 30 * 16000;
 
     public string serverUrl; // URL of the Python server
+
+    public string prompt;
     //private string endpoint = "transcribe";
 
     //private void Start()
@@ -146,59 +148,21 @@ public class RunWhisper : MonoBehaviour
     /// Sends the saved WAV file to a Python server and retrieves the transcription.
     /// </summary>
     /// <param name="filePath">The path to the WAV file to upload.</param>
-    public IEnumerator SendAudioForTranscription(string filePath)
+    public IEnumerator SendAudioForTranscription()
     {
-
-
-        if (!File.Exists(filePath))
-        {
-            Debug.LogError("Audio file not found: " + filePath);
-            throw new FileNotFoundException("Audio file not found", filePath);
-        }
-        byte[] audioData = File.ReadAllBytes(filePath);
-        string fileName = Path.GetFileName(filePath);
-        Dictionary<string, string> headers = new Dictionary<string, string>();
-        List<IMultipartFormSection> form = new List<IMultipartFormSection>
-        {
-           new MultipartFormFileSection("audio", audioData, fileName, "audio/wav")
-        };
-
-        byte[] boundary = UnityWebRequest.GenerateBoundary();
-        byte[] formSections = UnityWebRequest.SerializeFormSections(form, boundary);
-        byte[] terminate = Encoding.UTF8.GetBytes(String.Concat("-", Encoding.UTF8.GetString(boundary), "-"));
-        byte[] body = new byte[formSections.Length + terminate.Length];
-        Buffer.BlockCopy(formSections, 0, body, 0, formSections.Length);
-        Buffer.BlockCopy(terminate, 0, body, formSections.Length, terminate.Length);
-        string contentType = String.Concat("multipart/form-data; boundary=", Encoding.UTF8.GetString(boundary));
-        UnityWebRequest wr = new UnityWebRequest(serverUrl, "POST");
-        UploadHandler uploader = new UploadHandlerRaw(body);
-        uploader.contentType = contentType;
-        wr.uploadHandler = uploader;
-        DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
-        wr.downloadHandler = dH;
-        yield return wr.SendWebRequest();
-        if (wr.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log(wr.downloadHandler.text);
-            Debug.Log("Transcription successful: " + wr.downloadHandler.text);
-            transcription = JsonUtility.FromJson<Transcription>(wr.downloadHandler.text);
-            speechRecognitionController.onResponse.Invoke(transcription.transcription);
-        }
-        else
-        {
-
-            Debug.LogError(wr.downloadHandler.text);
-            //throw new SystemException(wr.error);
-            speechRecognitionController.onError.Invoke("Something went wrong. Check you network connection.");
-        }
+        WaitForSeconds waitForSeconds = new WaitForSeconds(UnityEngine.Random.Range(1f, 1.5f));
+        //Debug.Log(wr.downloadHandler.text);
+        //Debug.Log("Transcription successful: " + wr.downloadHandler.text);
+        //transcription = JsonUtility.FromJson<Transcription>(wr.downloadHandler.text);
+        yield return waitForSeconds;
+        speechRecognitionController.onResponse.Invoke(prompt);
     }
 
     public void SaveAndSendAudioClip()
     {
         try
         {
-            string path = SaveRecordingAsWav();
-            StartCoroutine(SendAudioForTranscription(path));
+            StartCoroutine(SendAudioForTranscription());
         }
         catch(Exception e)
         {
