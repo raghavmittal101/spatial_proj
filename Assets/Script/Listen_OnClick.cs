@@ -9,7 +9,6 @@ public class Listen_OnClick : MonoBehaviour
     public TMPro.TextMeshProUGUI speakButtonText;
     //public TMPro.TextMeshProUGUI transcriptionText;
     public TMPro.TMP_InputField transcriptionText;
-    public MainScript mainScript;
     public UnityAction<string> PartialTranscriptionAction, FullTranscriptionAction;
     public Button speakButton;
     public SpeechRecognitionController whisperSpeechRecognitionController;

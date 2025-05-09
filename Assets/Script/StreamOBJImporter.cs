@@ -28,7 +28,6 @@ public class StreamOBJImporter : MonoBehaviour
     [SerializeField] private GameObject objPrefabPlaceholderVR;
     [SerializeField] private _ToggleMaker VR2ARToggleButton;
     [SerializeField] private GameObject envBoundingCube;
-    [SerializeField] private MainScript mainScript;
     [SerializeField] private ImageFetcher imageFetcher;
 
     private string objFileFetchURL;
@@ -120,15 +119,6 @@ public class StreamOBJImporter : MonoBehaviour
                 loadedObj.transform.parent = grabbableObjBoundingCubeTransform.transform;
                 loadedObj.transform.localPosition = Vector3.zero;
                 loadedObj.transform.localScale = new Vector3(1, 1, 1);
-                if (inputMode == InputMode.prompt)
-                {
-                    mainScript.valueInDropdown.Add(objName);
-                    mainScript.objNameOnServer.Add(zipURL.asset_name);
-                    mainScript.objectsDropdown.enabled = false;
-                    mainScript.objectsDropdown.ClearOptions();
-                    mainScript.objectsDropdown.AddOptions(mainScript.valueInDropdown);
-                    mainScript.objectsDropdown.enabled = true;
-                }
             }
 
         }

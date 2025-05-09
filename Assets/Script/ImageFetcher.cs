@@ -20,7 +20,6 @@ public class ImageFetcher : MonoBehaviour
     [SerializeField] GameObject imageContainer;
     [SerializeField] GameObject imageContainerPanel;
     [SerializeField] Button generateImageButton;
-    [SerializeField] MainScript mainScript;
     [SerializeField] TMPro.TMP_InputField inputField;
     [SerializeField] StreamOBJImporter streamOBJImporter;
 
@@ -74,10 +73,15 @@ public class ImageFetcher : MonoBehaviour
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
+    void ProcessUserPromptForImage(string prompt)
+    {
+        streamOBJImporter.objectName = prompt;
+        streamOBJImporter.GetObjImage();
+    }
 
     public void ProcessTextToImage()
     {
-        mainScript.ProcessUserPromptForImage(inputField.text);
+        ProcessUserPromptForImage(inputField.text);
     }
 
     // spawn a button prefab and set it's image attribute to fetched image

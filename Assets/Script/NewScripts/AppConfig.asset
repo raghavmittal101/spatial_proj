@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ced70ac57ca483d9ccbd45a0dfdf67, type: 3}
+  m_Name: AppConfig
+  m_EditorClassIdentifier: 
+  _predefinedObjHostURL: http://100.64.0.1:5000/
+  _text23DHostURL: http://api.example.com/
+  _apiVersion: v0
+  _objFileFetchPath: /download-asset/
+  _objZipFetchPath: /download-asset-compressed/
+  _text23DGenPath: /text-2-3d/
+  _image23DGenPath: /img-2-3d/
+  _text2ImageGenPath: /text-2-img/
+  _downloadFolder: Downloads
+  _defaultObjectScale: 1.5
+  _defaultObjectYOffset: 0.05
